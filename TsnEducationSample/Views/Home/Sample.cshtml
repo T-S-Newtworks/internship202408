@@ -1,0 +1,313 @@
+﻿@{
+    ViewBag.Title = "サンプル";
+}
+<main aria-labelledby="title">
+    <h2 id="title">@ViewBag.Title</h2>
+    <div class="row">
+        <h3>① 電卓</h3>
+        <form name="dentaku">
+            <table class="calcTable">
+                <!-- 液晶画面部分 -->
+                <tr>
+                    <td colspan="4">
+                        <input type="text" class="display" name="display" value="" disabled>
+                    </td>
+                </tr>
+
+                <!-- 上から1段目（7~9＋÷） -->
+                <tr>
+                    <td><input type="button" class="calcBtn" value="7" onclick="get_calc(this)"></td>
+                    <td><input type="button" class="calcBtn" value="8" onclick="get_calc(this)"></td>
+                    <td><input type="button" class="calcBtn" value="9" onclick="get_calc(this)"></td>
+                    <td><input type="button" value="÷" class="calcBtn operator" name="div_btn" onclick="get_calc(this)"></td>
+                </tr>
+
+                <!-- 上から2段目（4~6＋×） -->
+                <tr>
+                    <td><input type="button" class="calcBtn" value="4" onclick="get_calc(this)"></td>
+                    <td><input type="button" class="calcBtn" value="5" onclick="get_calc(this)"></td>
+                    <td><input type="button" class="calcBtn" value="6" onclick="get_calc(this)"></td>
+                    <td><input type="button" value="×" class="calcBtn operator" name="multi_btn" onclick="get_calc(this)"></td>
+                </tr>
+
+                <!-- 上から3段目（1~3＋-） -->
+                <tr>
+                    <td><input type="button" class="calcBtn" value="1" onclick="get_calc(this)"></td>
+                    <td><input type="button" class="calcBtn" value="2" onclick="get_calc(this)"></td>
+                    <td><input type="button" class="calcBtn" value="3" onclick="get_calc(this)"></td>
+                    <td><input type="button" value="-" class="calcBtn operator" onclick="get_calc(this)"></td>
+                </tr>
+
+                <!-- 上から4段目（0/C/=/+) -->
+                <tr>
+                    <td><input type="button" class="calcBtn" value="0" onclick="get_calc(this)"></td>
+                    <td><input type="button" class="calcBtn" value="C" onclick="get_calc(this)"></td>
+                    <td><input type="button" value="=" class="calcBtn equal" onclick="get_calc(this)"></td>
+                    <td><input type="button" value="+" class="calcBtn operator" onclick="get_calc(this)"></td>
+                </tr>
+
+            </table>
+        </form>
+    </div>
+    <div class="row">
+        <h3>② JSON形式のオープンデータを活用した書籍検索</h3>
+        <form>
+            <div class=" d-flex flex-row gap-2 mb-2">
+                <div class="form-group">
+                    @Html.Label("", "タイトル", new { @for = "bookTitle" })
+                    <input type="text" class="form-control" id="bookTitle">
+                </div>
+                <div class="form-group">
+                    @Html.Label("", "著者名", new { @for = "bookAuthor" })
+                    <input type="text" class="form-control" id="bookAuthor">
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary mb-3" id="bookSearch">書籍検索</button>
+        </form>
+        <h4>書籍検索結果(最大10件表示)</h4>
+        <div>
+            <table class="table table-bordered" id="bookSearchTable">
+                <thead>
+                    <tr>
+                        <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">#</font></font></th>
+                        <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">タイトル</font></font></th>
+                        <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">著者</font></font></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="3" id="defaultFirstRow" style="text-align: center;">検索結果はありません。</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <div class="row">
+        <h3>③ いい感じのグラフを表示する(ダッシュボード)</h3>
+        @Html.ActionLink("ダッシュボードへ", "Index", "DashBoard", new { area = "" }, new { @class = "action-link" })
+    </div>
+    <div class="row">
+        <h3>④ サーバ側の処理(TODOリスト)</h3>
+        @Html.ActionLink("TODOリストへ", "Index", "Todo", new { area = "" }, new { @class = "action-link" })
+    </div>
+    <div class="row">
+        <h3>⑤ データベースとの接続(プロフィール画面)</h3>
+        @*URLパラメータはU000000001で決め打ちしている*@
+        @Html.ActionLink("プロフィール画面へ", "Details", "Users", new { ID = "U000000001" }, new { @class = "action-link" })
+    </div>
+
+</main>
+@section scripts{
+    <script type="text/javascript">
+
+        //#region 書籍検索
+        //送信ボタンがクリックされたときの処理
+        $('#bookSearch').click(function (e) {
+            e.preventDefault();
+
+            // 入力された情報を取得
+            var title = $('#bookTitle').val();
+            var author = $('#bookAuthor').val();
+            //検索条件未入力の場合は検索終了
+            if (!title && !author) {
+                alert("検索情報を入力してください");
+                return;
+            }
+
+            //デフォルト行を取得
+            var defaultFirstRow = $('#defaultFirstRow');
+            // tbody要素を取得
+            var bookSearchTable = $('#bookSearchTable tbody')[0];
+
+            //URLパラメータ文字列を作成
+            var urlParams = "";
+            if (title) {
+                urlParams = `intitle:${title}`;
+            }
+            if (author) {
+                if (title) {
+                    urlParams += `+inauthor:${author}`;
+                }
+                else {
+                    urlParams = `inauthor:${author}`;
+                }
+            }
+            // WebAPIのURL
+            // 公式docs(https://developers.google.com/books/docs/v1/using?hl=ja)
+            // 使い方の参考(https://labo.kon-ruri.co.jp/google-books-apis/#index_id1)
+            var url = 'https://www.googleapis.com/books/v1/volumes?q=' + encodeURIComponent(urlParams);
+
+            // WebAPI実行
+            $.ajax({
+                url: url,
+                //url: 'https://api.openbd.jp/v1/get?isbn=978-4-7741-9690-9',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    //現在の検索結果を削除
+                    var searchResults = $("#bookSearchTable tbody tr :not(:first)");
+                    for (let i = 0; i < searchResults.length; i++) {
+                        $(searchResults[i]).remove();
+                    }
+                    //検索して、データある場合
+                    if (data.totalItems > 0) {
+                        for (let i = 0; i < data.items.length; i++) {
+                            // tbody要素に最下行を追加
+                            var trElem = bookSearchTable.insertRow(-1);
+                            // td要素(セル要素)を追加
+                            var numberCellElem = trElem.insertCell(0);
+                            var titleCellElem = trElem.insertCell(1);
+                            var authorCellElem = trElem.insertCell(2);
+                            //#列
+                            var numberCell = document.createElement('span');
+                            numberCell.className = "bookSearchContents";
+                            numberCell.innerHTML = i+ 1;
+                            numberCellElem.appendChild(numberCell);
+                            //タイトル列
+                            var titleCell = document.createElement('span');
+                            titleCell.className = "bookSearchContents";
+                            titleCell.innerHTML = data.items[i].volumeInfo.title;
+                            titleCellElem.appendChild(titleCell);
+                            //著者列
+                            var authorCell = titleCell.cloneNode(false);
+                            //authorsがない場合は著者列は設定しない
+                            if (!('authors' in data.items[i].volumeInfo)) {
+                                continue;
+                            }
+                            for (let j = 0; j < data.items[i].volumeInfo.authors.length; j++) {
+                                authorCell.innerHTML += data.items[i].volumeInfo.authors[j];
+                                authorCellElem.appendChild(authorCell);
+                            }
+
+                        }
+                        //検索結果ある場合はデフォルト行非表示
+                        defaultFirstRow.hide();
+                    }
+                    else {
+                        //検索結果ない場合はデフォルト行表示
+                        defaultFirstRow.show();
+                    }
+                },
+                error: function (data) {
+                    alert("書籍検索中にエラーが発生しました。");
+                }
+            });
+        });
+
+        //#endregion
+
+        //#region 電卓の処理
+        function get_calc(btn) {
+            if (btn.value == "=") {
+                //末尾が数値ではない場合は計算しない
+                if (isNaN(document.dentaku.display.value.slice(-1)) == true) {
+                    return;
+                }
+                //表示されている文字を計算し、計算結果を表示する
+                //TODO: evalはXSS等のセキュリティ脆弱性を突く攻撃につながるため余裕あれば別のものにする
+                document.dentaku.display.value = eval(document.dentaku.display.value);
+            } else if (btn.value == "C") {
+                //表示されている文字を空にする
+                document.dentaku.display.value = "";
+            } else if (btn.value == "×") {
+                document.dentaku.display.value += "*";
+            } else if (btn.value == "÷") {
+                document.dentaku.display.value += "/";
+            } else {
+                //表示文字の設定
+                document.dentaku.display.value += btn.value;
+            }
+        }
+
+        //#endregion</script>
+
+    <style>
+        .action-link {
+            text-decoration: underline;
+            padding-left: calc(var(--bs-gutter-x)* 0.5);
+            font-size: 1.5rem;
+            width: auto;
+        }
+
+        .calcTable {
+            /* 電卓のサイズ */
+            width: 300px;
+            height: 400px;
+            /* 電卓が浮き出るように影を付ける */
+            border: solid 1px #dcdcdca4;
+            border-right: solid 4px #dcdcdca4;
+            border-bottom: solid 4px #dcdcdca4;
+            border-radius: 10px;
+            /* インライン要素を中央に配置 */
+            text-align: center;
+            /* 余白調整 */
+            padding: 8px;
+            margin: 20px;
+        }
+
+        .calcBtn {
+            /* ボタンのサイズ */
+            width: 70px;
+            height: 70px;
+            /* ボタンの文字サイズ */
+            font-size: x-large;
+            /* 数字部分の背景色 */
+            background-color: #dcdcdca4;
+            /* ボタンの詳細設定 */
+            border: none;
+            border-radius: 20px;
+            /* クリック時の黒枠を消す */
+            outline: none;
+        }
+
+        /* ディスプレイの詳細設定 */
+        .display {
+            width: 250px;
+            text-align: right; /* 文字を右詰めに */
+            /* 見た目の詳細設定 */
+            background: #ffffff;
+            border-top: solid #dcdcdca4 5px;
+            border-bottom: solid #dcdcdca4 5px;
+            border-right: solid #b6b6b6 6px;
+            border-left: solid #b6b6b6 6px;
+            border-radius: 5px;
+        }
+        /* 演算子の背景色を上書きで設定 */
+        .operator {
+            background-color: #87cefa;
+        }
+        /* 記号＝の部分の背景色を上書きで設定 */
+        .equal {
+            background-color: #b6b6b6;
+        }
+
+        /* カーソルを上に乗せた時に色を濃くする */
+        .calcBtn:hover {
+            background: #747373b9;
+        }
+
+        .display:hover {
+            background: #ffffff; /* ディスプレイ部分は無効化 */
+        }
+
+        .operator:hover {
+            background: #339cdd;
+        }
+
+        .operator:active {
+            background: #2c80b4;
+        }
+
+        /*書籍検索結果テーブルの設定*/
+        .table-bordered th:first-child {
+            width: 10%;
+            min-width: 80px;
+        }
+
+        .table-bordered td:first-child {
+            width: 10%;
+            min-width: 80px;
+        }
+    </style>
+}

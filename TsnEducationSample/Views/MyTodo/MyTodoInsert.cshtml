@@ -1,0 +1,333 @@
+@model List<TsnEducation2024.Models.MyTodoInsertItem>
+@{
+    ViewBag.Title = "Todoリスト";
+}
+<main aria-labelledby="title">
+    <div class="row">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-fade d-flex flex-row justify-content-between" role="alert">
+                <span>
+                    @TempData["SuccessMessage"]
+                </span>
+                <button type="button" class="btn-close" aria-label="Close"></button>
+            </div>
+        }
+        <div class="d-flex flex-row justify-content-between mb-3">
+            <h3>MyTodo</h3>
+            @Html.ActionLink("MyTodo画面へ戻る", "MyTodoIndex", "MyTodo", new { area = "" }, new { @class = "MyTodo-link" })
+        </div>
+        <div id="todoListTable">
+            @using (Html.BeginForm("SaveTodoItems", "Todo", FormMethod.Post, new { id = "todoForm" }))
+            {
+                <div style="display:flex; flex-direction:row; justify-content:flex-end;">
+                    <div>
+                        <button class="btn btn-primary mb-2" type="button" id="saveTodo">保存</button>
+                    </div>
+                </div>
+                <div style="display:flex; flex-direction:row; justify-content:space-between;">
+                    <h4>TODOリスト一覧</h4>
+                </div>
+                <div class="weekdays">
+                    <a href="@Url.Action("Day", "Todo", new { day = "Monday" })">月</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Tuesday" })">火</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Wednesday" })">水</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Thursday" })">木</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Friday" })">金</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Saturday" })">土</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Sunday" })">日</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "list" })">一覧</a>
+                </div>
+                <table class="table table-bordered" id="todoTable">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="day">日付</th>
+                            <th scope="col" class="time">期限</th>
+                            <th scope="col" class="title">タイトル</th>
+                            <th scope="col" class="description">説明</th>
+                            <th scope="col" class="repeat">繰り返し</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Day.ToString("yyyy-MM-dd")</td>
+                                <td>@item.Time.ToString("HH:mm")</td>
+                                <td>@item.Title</td>
+                                <td>@item.Description</td>
+                                <td>@item.Repeat</td>
+                            </tr>
+                        }
+                        <tr>
+                            <td>
+                                <input type="date" name="Day" required />
+                            </td>
+                            <td>
+                                <input type="time" name="Time" required />
+                                <select name="minutes" class="time-select">
+                                    <option value="00">00</option>
+                                    <option value="05">05</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+                                    <option value="30">30</option>
+                                    <option value="35">35</option>
+                                    <option value="40">40</option>
+                                    <option value="45">45</option>
+                                    <option value="50">50</option>
+                                    <option value="55">55</option>
+                                </select>
+                                <span class="notification-text">分前に通知</span>
+                            </td>
+                            <td>
+                                <input type="text" name="Title" placeholder="タイトルを入力" required />
+                            </td>
+                            <td>
+                                <textarea name="Description" placeholder="説明を入力"></textarea>
+                            </td>
+                            <td>
+                                <input type="text" name="Repeat" placeholder="繰り返しを入力" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="button" class="plus-button" onclick="addRow()">新しいタスクの追加</button>
+            }
+        </div>
+    </div>
+</main>
+@section scripts
+{
+    <script type="text/javascript">
+        function addRow() {
+            // テーブルボディを取得
+            var tableBody = document.getElementById('todoTable').getElementsByTagName('tbody')[0];
+
+            // 新しい行を作成
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
+        <td><input type="date" id="todoDate" name="Day" required /></td>
+        <td>
+            <input type="time" id="todoTime" name="Time" required />
+            <select id="minutes" name="minutes" class="time-select">
+                <option value="00">00</option>
+                <option value="05">05</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+                <option value="35">35</option>
+                <option value="40">40</option>
+                <option value="45">45</option>
+                <option value="50">50</option>
+                <option value="55">55</option>
+            </select>
+            <span class="notification-text">分前に通知</span>
+        </td>
+        <td><input type="text" id="todoTitle" name="Title" placeholder="タイトルを入力" required /></td>
+        <td><textarea id="todoDescription" name="Description" placeholder="説明を入力"></textarea></td>
+        <td><input type="text" id="todoRepeat" name="Repeat" placeholder="繰り返しを入力" /></td>
+    `;
+
+            // 新しい行をテーブルボディに追加
+            tableBody.appendChild(newRow);
+
+            // 新しい行の最後にプラスボタンを追加
+            var buttonRow = document.createElement('tr');
+            buttonRow.innerHTML = `
+        <td colspan="5" style="text-align: center;">
+            <button type="button" class="plus-button" onclick="addRow()">新しいタスクの追加</button>
+        </td>
+    `;
+            /*tableBody.appendChild(buttonRow);*/
+        }
+
+        document.getElementById('saveTodo').addEventListener('click', function () {
+            var tableBody = document.querySelector('#todoTable tbody');
+            var todoItems = tableBody.querySelectorAll('tr');
+
+            if (todoItems.length === 0) {
+                return false;
+            }
+
+            var form = document.getElementById('todoForm');
+            form.action = 'http://localhost:44369/MyTodo/tuikaTodoItems'; // 正しい URL に設定
+            form.method = 'post'; // メソッドを POST に設定
+
+
+            // 既存の隠しフィールドを削除
+            var existingHiddenFields = form.querySelectorAll('input[type="hidden"]');
+            existingHiddenFields.forEach(function (field) {
+                field.remove();
+            });
+
+            todoItems.forEach(function (row, index) {
+                var todoValues = row.children;
+
+                if (todoValues.length > 1) {
+                    var postDay = document.createElement('input');
+                    postDay.type = 'hidden';
+                    postDay.name = `todoItems[${index}].Day`;
+                    postDay.value = todoValues[0].querySelector('input[type="date"]').value;
+
+                    var postTime = document.createElement('input');
+                    postTime.type = 'hidden';
+                    postTime.name = `todoItems[${index}].Time`;
+                    postTime.value = todoValues[1].querySelector('input[type="time"]').value;
+
+                    var postTitle = document.createElement('input');
+                    postTitle.type = 'hidden';
+                    postTitle.name = `todoItems[${index}].Title`;
+                    postTitle.value = todoValues[2].querySelector('input[type="text"]').value;
+
+                    var postDescription = document.createElement('input');
+                    postDescription.type = 'hidden';
+                    postDescription.name = `todoItems[${index}].Description`;
+                    postDescription.value = todoValues[3].querySelector('textarea').value;
+
+                    var postRepeat = document.createElement('input');
+                    postRepeat.type = 'hidden';
+                    postRepeat.name = `todoItems[${index}].Repeat`;
+                    postRepeat.value = todoValues[4].querySelector('input[type="text"]').value;
+
+                    form.appendChild(postDay);
+                    form.appendChild(postTime);
+                    form.appendChild(postTitle);
+                    form.appendChild(postDescription);
+                    form.appendChild(postRepeat);
+                }
+            });
+
+            form.submit();
+        });
+
+    </script>
+}
+<style>
+    .sample-link {
+        text-decoration: underline;
+        padding-left: calc(var(--bs-gutter-x)* 0.5);
+        font-size: 1.5rem;
+        width: auto;
+    }
+
+    #todoListTable {
+        width: 100%;
+        height: 400px;
+        border-radius: 1rem;
+        margin-top: 2rem;
+    }
+
+    .table-bordered th:first-child {
+        width: 20%;
+        min-width: 30px;
+    }
+
+    .table-bordered td:first-child {
+        width: 20%;
+        min-width: 20px;
+    }
+
+    .day {
+        width: 200%;
+    }
+
+    .time {
+        width: 200px;
+    }
+
+    .title {
+        width: 400px;
+    }
+
+    .description {
+        width: 400px;
+    }
+
+    .repeat {
+        width: 200px;
+    }
+
+    .todoContents {
+        vertical-align: inherit;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px; /* ボタン周りにスペースを確保 */
+    }
+
+
+    .weekdays {
+        display: flex;
+        flex-wrap: wrap; /* 複数行にする場合 */
+        justify-content: center; /* 水平中央揃え */
+        margin-bottom: 20px; /* 下に少しスペースを追加 */
+        position: relative;
+    }
+
+        .weekdays a {
+            margin: 0 8px; /* 左右に8pxのスペースを追加 */
+            font-weight: bold; /* テキストを太字に */
+        }
+
+    form div {
+        margin-bottom: 15px;
+    }
+
+    form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    form input[type="text"],
+    form input[type="date"],
+    form input[type="time"],
+    form textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    form button[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+        form button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+    .day {
+        width: 100px;
+    }
+
+    /* HTML内のstyle属性の代わりにCSSを使用 */
+    .notification-container {
+        display: flex;
+        align-items: center;
+    }
+
+        .notification-container span {
+            margin-left: 10px; /*必要に応じて調整 */
+            font-size: 14px; /*必要に応じて調整 */
+        }
+
+    .plus-button {
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+    }
+</style>

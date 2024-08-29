@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+@Styles.Render("~/Content/Page/Index.css")
+@Styles.Render("~/Scripts/Page/Index.js")
+
+<main>
+    @* インターンシップ用 *@
+    @*<section class="row" aria-labelledby="aspnetTitle">
+        <div class="animate seven">
+            <span>T</span><span>.</span><span>S</span><span>.</span><span>N</span><span>e</span><span>t</span><span>w</span><span>o</span><span>r</span><span>k</span><span>s</span>
+        </div>
+        <div class="animate2 one">
+            <span>I</span><span>n</span><span>s</span><span>t</span><span>r</span><span>u</span><span>c</span><span>t</span><span>o</span><span>r</span>
+        </div>
+        <div class="animate3 three">
+            <span>Y</span><span>.</span><span>T</span><span>a</span><span>n</span><span>a</span><span>b</span><span>e</span>&nbsp;&nbsp;
+            <span>Y</span><span>.</span><span>K</span><span>a</span><span>s</span><span>s</span><span>a</span><span>i</span>&nbsp;&nbsp;
+            <span>N</span><span>.</span><span>M</span><span>i</span><span>y</span><span>a</span><span>w</span><span>a</span><span>k</span><span>i</span>
+        </div>
+        <div class="animate2 one">
+            <span>S</span><span>t</span><span>u</span><span>d</span><span>e</span><span>n</span><span>t</span>
+        </div>
+        <div class="animate3 three">
+            <span>X</span><span>.</span><span>U</span><span>n</span><span>k</span><span>n</span><span>o</span><span>w</span><span>n</span>&nbsp;&nbsp;
+            <span>X</span><span>.</span><span>U</span><span>n</span><span>k</span><span>n</span><span>o</span><span>w</span><span>n</span>&nbsp;&nbsp;
+            <span>X</span><span>.</span><span>U</span><span>n</span><span>k</span><span>n</span><span>o</span><span>w</span><span>n</span>&nbsp;&nbsp;
+            <span>X</span><span>.</span><span>U</span><span>n</span><span>k</span><span>n</span><span>o</span><span>w</span><span>n</span>
+        </div>
+        <div class="animate3 three">
+            <span>X</span><span>.</span><span>U</span><span>n</span><span>k</span><span>n</span><span>o</span><span>w</span><span>n</span>&nbsp;&nbsp;
+            <span>X</span><span>.</span><span>U</span><span>n</span><span>k</span><span>n</span><span>o</span><span>w</span><span>n</span>&nbsp;&nbsp;
+            <span>X</span><span>.</span><span>U</span><span>n</span><span>k</span><span>n</span><span>o</span><span>w</span><span>n</span>&nbsp;&nbsp;
+            <span>X</span><span>.</span><span>U</span><span>n</span><span>k</span><span>n</span><span>o</span><span>w</span><span>n</span>
+        </div>
+    </section>
+    <br />*@
+    <div class="row">
+        <section class="col-md-6 mb-4" aria-labelledby="developTitle">
+            <h2 id="developTitle">開発環境</h2>
+            <p>
+                当システムの開発環境には、Microsoft製のIDE『Visual Studio』を使用しました。<br />
+                ソース管理はGitで行いました。<br />
+                開発時はローカルのGitLabを使用しており、チーム開発のソース管理の大変さを体験して貰いました。
+            </p>
+            <div>
+                <img src="~/Content/Images/VisualStudio.png" class="img-fluid index-img" alt="Visual Studio" />
+                <img src="~/Content/Images/gitlab.png" class="img-fluid index-img" alt="GitLab" />
+            </div>
+        </section>
+        @* インターンシップ用 *@
+        @*<section class="col-md-6 mb-4" aria-labelledby="developTitle">
+                <h2 id="developTitle">開発環境</h2>
+                <p>
+                    当システムの開発環境には、Microsoft製のIDE『Visual Studio』を使用しました。<br />
+                    ソース管理はGitで行いました。<br />
+                    開発時はローカルのGitLabを使用しましたが、皆さんが自宅からでも確認できるように、GitHubに公開しています。
+                    <a href="https://github.com/T-S-Newtworks/TsnEducationSample">ソースはこちら</a>
+                </p>
+                <div>
+                    <img src="~/Content/Images/VisualStudio.png" class="img-fluid index-img" alt="Visual Studio" />
+                    <img src="~/Content/Images/github.png" class="img-fluid index-img" alt="GitHub" />
+                </div>
+            </section>*@
+        <section class="col-md-6 mb-4" aria-labelledby="infraTitle">
+            <h2 id="infraTitle">インフラ</h2>
+            <p>
+                開発時は、Visual StudioからローカルのWebサーバ『IIS Express』を呼び出してデバックしていました。<br />
+                ただし、どこからでも見れるようにするためには、社内Webサーバに公開する必要があります。<br />
+                また、DBは『SQL Server』を使用しています。
+            </p>
+            <div>
+                <img src="~/Content/Images/IIS.png" class="img-fluid index-img" alt="IIS" />
+                <img src="~/Content/Images/SQLServer.png" class="img-fluid index-img" alt="SQLServer" />
+            </div>
+        </section>
+        @* インターンシップ用 *@
+        @*<section class="col-md-6 mb-4" aria-labelledby="infraTitle">
+                <h2 id="infraTitle">インフラ</h2>
+                <p>
+                    開発時は、Visual StudioからWebサーバ『IIS Express』を呼び出してデバックしていました。<br />
+                    ただし、どこからでも見れるようにするためには、インターネット上のWebサーバに公開する必要があります。<br />
+                    今回は、パブリッククラウドである『Azure』の『App Service』を使用し、公開（ローンチ）してます。<br />
+                    皆さんが自宅からでもこのサイトが見られるのは、パブリッククラウドに公開しているからです。
+                </p>
+                <div>
+                    <img src="~/Content/Images/Azure.png" class="img-fluid index-img" alt="Azure" />
+                    <img src="~/Content/Images/IIS.png" class="img-fluid index-img" alt="IIS" />
+                </div>
+            </section>*@
+        <section class="col-md-6 mb-4" aria-labelledby="frontendTitle">
+            <h2 id="frontendTitle">フロントエンド</h2>
+            <p>
+                フロントエンドは、JavaScriptライブラリとして『jQuery』を使用しているぐらいです。<br />
+                ReactやVueなどのモダンなフレームワークは、規模が小さいため使用していません。<br />
+                ですので、ある程度のJavaScriptの知識があれば、コーディングできます。<br />
+                また、Bootstrapを導入しているので、レスポンシブデザインに対応しています。<br />
+            </p>
+            <div>
+                <img src="~/Content/Images/JQuery.png" class="img-fluid index-img" alt="JQuery" />
+                <img src="~/Content/Images/bootstrap.png" class="img-fluid index-img" alt="bootstrap" />
+            </div>
+        </section>
+        <section class="col-md-6 mb-4" aria-labelledby="backendTitle">
+            <h2 id="backendTitle">バックエンド</h2>
+            <p>
+                .NET Framework 4.8 で、言語は『C#』を採用しています。<br />
+                フレームワークは『ASP.NET MVC 5』を使用しています。<br />
+                .NET系のWEBアプリを作成する際には、ASP.NET MVCが一般的です。<br />
+            </p>
+            <div>
+                <img src="~/Content/Images/dotnet.png" class="img-fluid index-img" alt="dotnet" />
+                <img src="~/Content/Images/csharp.png" class="img-fluid index-img" alt="csharp" />
+            </div>
+        </section>
+    </div>
+</main>
