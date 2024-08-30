@@ -1,6 +1,6 @@
 @model List<TsnEducation2024.Models.MyTodoInsertItem>
 @{
-    ViewBag.Title = "Todoãƒªã‚¹ãƒˆ";
+    ViewBag.Title = "TodoƒŠƒXƒg";
 }
 <main aria-labelledby="title">
     <div class="row">
@@ -15,37 +15,37 @@
         }
         <div class="d-flex flex-row justify-content-between mb-3">
             <h3>MyTodo</h3>
-            @Html.ActionLink("MyTodoç”»é¢ã¸æˆ»ã‚‹", "MyTodoIndex", "MyTodo", new { area = "" }, new { @class = "MyTodo-link" })
+            @Html.ActionLink("MyTodo‰æ–Ê‚Ö–ß‚é", "MyTodoIndex", "MyTodo", new { area = "" }, new { @class = "MyTodo-link" })
         </div>
         <div id="todoListTable">
             @using (Html.BeginForm("SaveTodoItems", "Todo", FormMethod.Post, new { id = "todoForm" }))
             {
                 <div style="display:flex; flex-direction:row; justify-content:flex-end;">
                     <div>
-                        <button class="btn btn-primary mb-2" type="button" id="saveTodo">ä¿å­˜</button>
+                        <button class="btn btn-primary mb-2" type="button" id="saveTodo">•Û‘¶</button>
                     </div>
                 </div>
                 <div style="display:flex; flex-direction:row; justify-content:space-between;">
-                    <h4>TODOãƒªã‚¹ãƒˆä¸€è¦§</h4>
+                    <h4>TODOƒŠƒXƒgˆê——</h4>
                 </div>
                 @*<div class="weekdays">
-                    <a href="@Url.Action("Day", "Todo", new { day = "Monday" })">æœˆ</a>
-                    <a href="@Url.Action("Day", "Todo", new { day = "Tuesday" })">ç«</a>
-                    <a href="@Url.Action("Day", "Todo", new { day = "Wednesday" })">æ°´</a>
-                    <a href="@Url.Action("Day", "Todo", new { day = "Thursday" })">æœ¨</a>
-                    <a href="@Url.Action("Day", "Todo", new { day = "Friday" })">é‡‘</a>
-                    <a href="@Url.Action("Day", "Todo", new { day = "Saturday" })">åœŸ</a>
-                    <a href="@Url.Action("Day", "Todo", new { day = "Sunday" })">æ—¥</a>
-                    <a href="@Url.Action("Day", "Todo", new { day = "list" })">ä¸€è¦§</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Monday" })">Œ</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Tuesday" })">‰Î</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Wednesday" })">…</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Thursday" })">–Ø</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Friday" })">‹à</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Saturday" })">“y</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Sunday" })">“ú</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "list" })">ˆê——</a>
                 </div>*@
                 <table class="table table-bordered" id="todoTable">
                     <thead>
                         <tr>
-                            <th scope="col" class="day">æ—¥ä»˜</th>
-                            <th scope="col" class="time">æœŸé™</th>
-                            <th scope="col" class="title">ã‚¿ã‚¤ãƒˆãƒ«</th>
-                            <th scope="col" class="description">èª¬æ˜</th>
-                            <th scope="col" class="repeat">ç¹°ã‚Šè¿”ã—</th>
+                            <th scope="col" class="day">“ú•t</th>
+                            <th scope="col" class="time">ŠúŒÀ</th>
+                            <th scope="col" class="title">ƒ^ƒCƒgƒ‹</th>
+                            <th scope="col" class="description">à–¾</th>
+                            <th scope="col" class="repeat">ŒJ‚è•Ô‚µ</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,21 +79,21 @@
                                     <option value="50">50</option>
                                     <option value="55">55</option>
                                 </select>
-                                <span class="notification-text">åˆ†å‰ã«é€šçŸ¥</span>
+                                <span class="notification-text">•ª‘O‚É’Ê’m</span>
                             </td>
                             <td>
-                                <input type="text" name="Title" placeholder="ã‚¿ã‚¤ãƒˆãƒ«ã‚’å…¥åŠ›" required />
+                                <input type="text" name="Title" placeholder="ƒ^ƒCƒgƒ‹‚ğ“ü—Í" required />
                             </td>
                             <td>
-                                <textarea name="Description" placeholder="èª¬æ˜ã‚’å…¥åŠ›"></textarea>
+                                <textarea name="Description" placeholder="à–¾‚ğ“ü—Í"></textarea>
                             </td>
                             <td>
-                                <input type="text" name="Repeat" placeholder="ç¹°ã‚Šè¿”ã—ã‚’å…¥åŠ›" />
+                                <input type="text" name="Repeat" placeholder="ŒJ‚è•Ô‚µ‚ğ“ü—Í" />
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <button type="button" class="plus-button" onclick="addRow()">æ–°ã—ã„ã‚¿ã‚¹ã‚¯ã®è¿½åŠ </button>
+                <button type="button" class="plus-button" onclick="addRow()">V‚µ‚¢ƒ^ƒXƒN‚Ì’Ç‰Á</button>
             }
         </div>
     </div>
@@ -102,10 +102,10 @@
 {
     <script type="text/javascript">
         function addRow() {
-            // ãƒ†ãƒ¼ãƒ–ãƒ«ãƒœãƒ‡ã‚£ã‚’å–å¾—
+            // ƒe[ƒuƒ‹ƒ{ƒfƒB‚ğæ“¾
             var tableBody = document.getElementById('todoTable').getElementsByTagName('tbody')[0];
 
-            // æ–°ã—ã„è¡Œã‚’ä½œæˆ
+            // V‚µ‚¢s‚ğì¬
             var newRow = document.createElement('tr');
             newRow.innerHTML = `
         <td><input type="date" id="todoDate" name="Day" required /></td>
@@ -125,21 +125,21 @@
                 <option value="50">50</option>
                 <option value="55">55</option>
             </select>
-            <span class="notification-text">åˆ†å‰ã«é€šçŸ¥</span>
+            <span class="notification-text">•ª‘O‚É’Ê’m</span>
         </td>
-        <td><input type="text" id="todoTitle" name="Title" placeholder="ã‚¿ã‚¤ãƒˆãƒ«ã‚’å…¥åŠ›" required /></td>
-        <td><textarea id="todoDescription" name="Description" placeholder="èª¬æ˜ã‚’å…¥åŠ›"></textarea></td>
-        <td><input type="text" id="todoRepeat" name="Repeat" placeholder="ç¹°ã‚Šè¿”ã—ã‚’å…¥åŠ›" /></td>
+        <td><input type="text" id="todoTitle" name="Title" placeholder="ƒ^ƒCƒgƒ‹‚ğ“ü—Í" required /></td>
+        <td><textarea id="todoDescription" name="Description" placeholder="à–¾‚ğ“ü—Í"></textarea></td>
+        <td><input type="text" id="todoRepeat" name="Repeat" placeholder="ŒJ‚è•Ô‚µ‚ğ“ü—Í" /></td>
     `;
 
-            // æ–°ã—ã„è¡Œã‚’ãƒ†ãƒ¼ãƒ–ãƒ«ãƒœãƒ‡ã‚£ã«è¿½åŠ 
+            // V‚µ‚¢s‚ğƒe[ƒuƒ‹ƒ{ƒfƒB‚É’Ç‰Á
             tableBody.appendChild(newRow);
 
-            // æ–°ã—ã„è¡Œã®æœ€å¾Œã«ãƒ—ãƒ©ã‚¹ãƒœã‚¿ãƒ³ã‚’è¿½åŠ 
+            // V‚µ‚¢s‚ÌÅŒã‚Éƒvƒ‰ƒXƒ{ƒ^ƒ“‚ğ’Ç‰Á
             var buttonRow = document.createElement('tr');
             buttonRow.innerHTML = `
         <td colspan="5" style="text-align: center;">
-            <button type="button" class="plus-button" onclick="addRow()">æ–°ã—ã„ã‚¿ã‚¹ã‚¯ã®è¿½åŠ </button>
+            <button type="button" class="plus-button" onclick="addRow()">V‚µ‚¢ƒ^ƒXƒN‚Ì’Ç‰Á</button>
         </td>
     `;
             /*tableBody.appendChild(buttonRow);*/
@@ -154,11 +154,11 @@
             }
 
             var form = document.getElementById('todoForm');
-            form.action = 'http://localhost:44369/MyTodo/tuikaTodoItems'; // æ­£ã—ã„ URL ã«è¨­å®š
-            form.method = 'post'; // ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ POST ã«è¨­å®š
+            form.action = 'http://localhost:44369/MyTodo/tuikaTodoItems'; // ³‚µ‚¢ URL ‚Éİ’è
+            form.method = 'post'; // ƒƒ\ƒbƒh‚ğ POST ‚Éİ’è
 
 
-            // æ—¢å­˜ã®éš ã—ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’å‰Šé™¤
+            // Šù‘¶‚Ì‰B‚µƒtƒB[ƒ‹ƒh‚ğíœ
             var existingHiddenFields = form.querySelectorAll('input[type="hidden"]');
             existingHiddenFields.forEach(function (field) {
                 field.remove();
@@ -216,7 +216,7 @@
                 const dayInput = row.querySelector('input[name="Day"]');
                 const dayOfWeek = parseRepeatToDay(event.target.value);
                 if (dayOfWeek) {
-                    dayInput.value = dayOfWeek.toISOString().split('T')[0]; // YYYY-MM-DD å½¢å¼ã§è¨­å®š
+                    dayInput.value = dayOfWeek.toISOString().split('T')[0]; // YYYY-MM-DD Œ`®‚Åİ’è
                 }
             }
         });
@@ -276,21 +276,21 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 10px; /* ãƒœã‚¿ãƒ³å‘¨ã‚Šã«ã‚¹ãƒšãƒ¼ã‚¹ã‚’ç¢ºä¿ */
+        padding: 10px; /* ƒ{ƒ^ƒ“ü‚è‚ÉƒXƒy[ƒX‚ğŠm•Û */
     }
 
 
     /*.weekdays {
         display: flex;
-        flex-wrap: wrap;*/ /* è¤‡æ•°è¡Œã«ã™ã‚‹å ´åˆ */
-        /*justify-content: center;*/ /* æ°´å¹³ä¸­å¤®æƒãˆ */
-        /*margin-bottom: 20px;*/ /* ä¸‹ã«å°‘ã—ã‚¹ãƒšãƒ¼ã‚¹ã‚’è¿½åŠ  */
+        flex-wrap: wrap;*/ /* •¡”s‚É‚·‚éê‡ */
+        /*justify-content: center;*/ /* …•½’†‰›‘µ‚¦ */
+        /*margin-bottom: 20px;*/ /* ‰º‚É­‚µƒXƒy[ƒX‚ğ’Ç‰Á */
         /*position: relative;
     }
 
         .weekdays a {
-            margin: 0 8px;*/ /* å·¦å³ã«8pxã®ã‚¹ãƒšãƒ¼ã‚¹ã‚’è¿½åŠ  */
-            /*font-weight: bold;*/ /* ãƒ†ã‚­ã‚¹ãƒˆã‚’å¤ªå­—ã« */
+            margin: 0 8px;*/ /* ¶‰E‚É8px‚ÌƒXƒy[ƒX‚ğ’Ç‰Á */
+            /*font-weight: bold;*/ /* ƒeƒLƒXƒg‚ğ‘¾š‚É */
         /*}*/
 
     form div {
@@ -328,15 +328,15 @@
         width: 100px;
     }
 
-    /* HTMLå†…ã®styleå±æ€§ã®ä»£ã‚ã‚Šã«CSSã‚’ä½¿ç”¨ */
+    /* HTML“à‚Ìstyle‘®«‚Ì‘ã‚í‚è‚ÉCSS‚ğg—p */
     .notification-container {
         display: flex;
         align-items: center;
     }
 
         .notification-container span {
-            margin-left: 10px; /*å¿…è¦ã«å¿œã˜ã¦èª¿æ•´ */
-            font-size: 14px; /*å¿…è¦ã«å¿œã˜ã¦èª¿æ•´ */
+            margin-left: 10px; /*•K—v‚É‰‚¶‚Ä’²® */
+            font-size: 14px; /*•K—v‚É‰‚¶‚Ä’²® */
         }
 
     .plus-button {

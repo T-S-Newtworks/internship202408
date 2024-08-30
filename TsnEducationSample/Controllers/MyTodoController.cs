@@ -162,8 +162,9 @@ namespace TsnEducation2024.Controllers
             return View("MyTodoInsert", todoItems);
         }
 
-        public ActionResult Searach(string title)
+        public ActionResult Search(string title)
         {
+            // ファイルのパスをアクションメソッド内に移動
             string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
 
             var todoItems = ReadTodoItemsFromFile(filePath);
@@ -177,10 +178,112 @@ namespace TsnEducation2024.Controllers
             // 検索結果をビューに渡す
             return View("Search", todoItems);
         }
-    }
+
+        private List<MyTodoItem> ReadTodoItemsFromFile(string filePath)
+        {
+            var todoItems = new List<MyTodoItem>();
+            var lines = System.IO.File.ReadAllLines(filePath);
+
+            foreach (var line in lines)
+            {
+                var values = line.Split(',');
+                todoItems.Add(new MyTodoItem
+                {
+                    Id = int.Parse(values[0]),
+                    Day = DateTime.Parse(values[1]),
+                    Time = DateTime.Parse(values[2]),
+                    Title = values[3],
+                    Description = values[4],
+                    Result = values[5]
+                });
+            }
+
+            return todoItems;
+        }
+
+        public ActionResult DeleteTodoItems(List<MyTodoItem> deleteItems)
+        {
+            var filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            var todos = ReadTodoItemsFromCsv(filePath);
+
+            // 削除するアイテムを特定
+            var remainingTodos = todos
+                .Where(todo => !deleteItems.Any(d => d.Day == todo.Day && d.Time == todo.Time && d.Title == todo.Title && d.Description == todo.Description && d.Result == todo.Result))
+                .ToList();
+
+            SaveTodoItemsToCsv(filePath, remainingTodos);
+
+            TempData["SuccessMessage"] = "選択した項目を削除しました。";
+            return RedirectToAction("MyTodoSearch");
+        }
+
+        private void SaveTodoItemsToCsv(string filePath, List<MyTodoItem> todos)
+        {
+            var csvLines = new List<string>();
+
+            // CSVヘッダー
+            csvLines.Add("Day,Time,Title,Description,Result");
+
+            // 各MyTodoItemオブジェクトをCSV形式に変換してリストに追加
+            foreach (var todo in todos)
+            {
+                var line = $"{todo.Day:yyyy-MM-dd},{todo.Time:HH:mm},{todo.Title},{todo.Description},{todo.Result}";
+                csvLines.Add(line);
+            }
+
+            // ファイルに書き込む
+            System.IO.File.WriteAllLines(filePath, csvLines);
+        }
+        private List<MyTodoItem> ReadTodoItemsFromCsv(string filePath)
+        {
+            var todos = new List<MyTodoItem>();
+
+            try
+            {
+                // CSVファイルの全行を読み込む
+                var lines = System.IO.File.ReadAllLines(filePath);
+
+                // 1行目はヘッダー行であると仮定して、スキップする
+                foreach (var line in lines.Skip(1))
+                {
+                    // カンマで区切られた値を取得
+                    var values = line.Split(',');
+
+                    // 必要なフィールド数があるか確認
+                    if (values.Length >= 5)
+                    {
+                        // MyTodoItemオブジェクトを作成
+                        var todo = new MyTodoItem
+                        {
+                            Day = DateTime.Parse(values[0]),
+                            Time = DateTime.Parse(values[1]),
+                            Title = values[2],
+                            Description = values[3],
+                            Result = values[4]
+                        };
+
+                        // リストに追加
+                        todos.Add(todo);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // エラーハンドリング: ログを記録するか、適切な処理を行う
+                Console.WriteLine("CSV読み込み中にエラーが発生しました: " + ex.Message);
+            }
+
+            return todos;
+        }
+
+        //public ActionResult SearchTodoItems(List<SerachItem> todoItems)
+        //{
 
 
-        public  ActionResult list()
+        //}
+
+
+        public ActionResult list()
         {
             // デフォルトで表示するページを「一覧」に設定
             var defaultlist = "list";
