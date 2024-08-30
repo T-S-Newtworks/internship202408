@@ -36,13 +36,13 @@ namespace TsnEducation2024.Controllers
                             Time = DateTime.Parse(rowValues[1]),
                             Title = rowValues[2],
                             Description = rowValues[3],
-                            Result = rowValues[4]//Œã‚Å¡‚·
+                            Result = rowValues[4]//å¾Œã§æ²»ã™
                         });
                     }
                 }
             }
 
-            // TempData ‚Éƒf[ƒ^‚ğ•Û‘¶
+            // TempData ã«ãƒ‡ãƒ¼ã‚¿ã‚’ä¿å­˜
             TempData["TodoItems"] = todoItems;
 
             return View(todoItems);
@@ -50,7 +50,7 @@ namespace TsnEducation2024.Controllers
         
         public ActionResult MyTodoInsert()
         {
-            var todoItems = new List<MyTodoInsertItem>(); // ƒf[ƒ^‚Ìæ“¾‚Ü‚½‚Í¶¬
+            var todoItems = new List<MyTodoInsertItem>(); // ãƒ‡ãƒ¼ã‚¿ã®å–å¾—ã¾ãŸã¯ç”Ÿæˆ
             return View(todoItems);
         }
 
@@ -61,7 +61,7 @@ namespace TsnEducation2024.Controllers
 
             if (todoItems != null)
             {
-                // MyTodoItem‚©‚çSearchItem‚É•ÏŠ·
+                // MyTodoItemã‹ã‚‰SearchItemã«å¤‰æ›
                 var searchItems = todoItems.Select(item => new SearchItem
                 {
                     Day = item.Day,
@@ -74,7 +74,7 @@ namespace TsnEducation2024.Controllers
                 return View(searchItems);
             }
 
-            // ƒf[ƒ^‚ª‚È‚¢ê‡‚Í‹ó‚ÌƒŠƒXƒg‚ğ“n‚·
+            // ãƒ‡ãƒ¼ã‚¿ãŒãªã„å ´åˆã¯ç©ºã®ãƒªã‚¹ãƒˆã‚’æ¸¡ã™
             return View(new List<SearchItem>());
         }
         public ActionResult SaveTodoItems(List<MyTodoItem> todoItems)
@@ -99,7 +99,7 @@ namespace TsnEducation2024.Controllers
                 }
             }
 
-            TempData["SuccessMessage"] = "TodoƒŠƒXƒg‚ğ•Û‘¶‚µ‚Ü‚µ‚½B";
+            TempData["SuccessMessage"] = "Todoãƒªã‚¹ãƒˆã‚’ä¿å­˜ã—ã¾ã—ãŸã€‚";
 
             return RedirectToAction("MyTodoIndex");
         }
@@ -126,7 +126,7 @@ namespace TsnEducation2024.Controllers
                 }
             }
 
-            TempData["SuccessMessage"] = "TodoƒŠƒXƒg‚ğíœ‚µ‚Ü‚µ‚½B";
+            TempData["SuccessMessage"] = "Todoãƒªã‚¹ãƒˆã‚’å‰Šé™¤ã—ã¾ã—ãŸã€‚";
 
             return RedirectToAction("MyTodoIndex");
         }
@@ -137,8 +137,8 @@ namespace TsnEducation2024.Controllers
             {
                 if (todoItems == null || !todoItems.Any())
                 {
-                    // ƒ‚ƒfƒ‹‚ª‹ó‚Ìê‡‚Ìˆ—
-                    ModelState.AddModelError("", "ƒf[ƒ^‚ª‘—M‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB");
+                    // ãƒ¢ãƒ‡ãƒ«ãŒç©ºã®å ´åˆã®å‡¦ç†
+                    ModelState.AddModelError("", "ãƒ‡ãƒ¼ã‚¿ãŒé€ä¿¡ã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚");
                     todoItems = new List<MyTodoInsertItem>();
                     return View("MyTodoInsert", todoItems);
                 }
@@ -149,34 +149,32 @@ namespace TsnEducation2024.Controllers
                 {
                     foreach (var item in todoItems)
                     {
-                        // ŠeƒAƒCƒeƒ€‚ğCSVŒ`®‚Å‘‚«‚Ş
+                        // å„ã‚¢ã‚¤ãƒ†ãƒ ã‚’CSVå½¢å¼ã§æ›¸ãè¾¼ã‚€
                         writer.WriteLine($"{item.Day:yyyy-MM-dd},{item.Time:HH:mm},{item.Title},{item.Description},{item.Repeat}");
                     }
                 }
 
-                TempData["SuccessMessage"] = "TODOƒŠƒXƒg‚ª’Ç‰Á‚³‚ê‚Ü‚µ‚½B";
+                TempData["SuccessMessage"] = "TODOãƒªã‚¹ãƒˆãŒè¿½åŠ ã•ã‚Œã¾ã—ãŸã€‚";
                 return RedirectToAction("MyTodoInsert");
             }
 
-            // ƒ‚ƒfƒ‹‚ª–³Œø‚Èê‡AƒoƒŠƒf[ƒVƒ‡ƒ“ƒGƒ‰[‚ÌƒƒbƒZ[ƒW‚ğ•\¦
+            // ãƒ¢ãƒ‡ãƒ«ãŒç„¡åŠ¹ãªå ´åˆã€ãƒãƒªãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¨ãƒ©ãƒ¼ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤º
             return View("MyTodoInsert", todoItems);
         }
 
         public ActionResult Search(string title)
         {
-            // ƒtƒ@ƒCƒ‹‚ÌƒpƒX‚ğƒAƒNƒVƒ‡ƒ“ƒƒ\ƒbƒh“à‚ÉˆÚ“®
             string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
-
             var todoItems = ReadTodoItemsFromFile(filePath);
 
+            // ã‚¿ã‚¤ãƒˆãƒ«ãŒéƒ¨åˆ†ä¸€è‡´ã™ã‚‹ã‚¿ã‚¹ã‚¯ã®ã¿ã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼
             if (!string.IsNullOrEmpty(title))
             {
-                // ‚ ‚¢‚Ü‚¢ŒŸõi•”•ªˆê’vj
                 todoItems = todoItems.Where(t => t.Title.Contains(title)).ToList();
             }
 
-            // ŒŸõŒ‹‰Ê‚ğƒrƒ…[‚É“n‚·
-            return View("Search", todoItems);
+            // ä¸€è‡´ã™ã‚‹ã‚¿ã‚¹ã‚¯ã‚’JSONå½¢å¼ã§è¿”ã™
+            return Json(todoItems);
         }
 
         private List<MyTodoItem> ReadTodoItemsFromFile(string filePath)
@@ -190,11 +188,11 @@ namespace TsnEducation2024.Controllers
                 todoItems.Add(new MyTodoItem
                 {
                     Id = int.Parse(values[0]),
-                    Day = DateTime.Parse(values[1]),
-                    Time = DateTime.Parse(values[2]),
-                    Title = values[3],
-                    Description = values[4],
-                    Result = values[5]
+                    Day = DateTime.Parse(values[2]),
+                    Time = DateTime.Parse(values[3]),
+                    Title = values[4],
+                    Description = values[5],
+                    Result = values[6]
                 });
             }
 
@@ -206,14 +204,14 @@ namespace TsnEducation2024.Controllers
             var filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
             var todos = ReadTodoItemsFromCsv(filePath);
 
-            // íœ‚·‚éƒAƒCƒeƒ€‚ğ“Á’è
+            // å‰Šé™¤ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’ç‰¹å®š
             var remainingTodos = todos
                 .Where(todo => !deleteItems.Any(d => d.Day == todo.Day && d.Time == todo.Time && d.Title == todo.Title && d.Description == todo.Description && d.Result == todo.Result))
                 .ToList();
 
             SaveTodoItemsToCsv(filePath, remainingTodos);
 
-            TempData["SuccessMessage"] = "‘I‘ğ‚µ‚½€–Ú‚ğíœ‚µ‚Ü‚µ‚½B";
+            TempData["SuccessMessage"] = "é¸æŠã—ãŸé …ç›®ã‚’å‰Šé™¤ã—ã¾ã—ãŸã€‚";
             return RedirectToAction("MyTodoSearch");
         }
 
@@ -221,17 +219,17 @@ namespace TsnEducation2024.Controllers
         {
             var csvLines = new List<string>();
 
-            // CSVƒwƒbƒ_[
+            // CSVãƒ˜ãƒƒãƒ€ãƒ¼
             csvLines.Add("Day,Time,Title,Description,Result");
 
-            // ŠeMyTodoItemƒIƒuƒWƒFƒNƒg‚ğCSVŒ`®‚É•ÏŠ·‚µ‚ÄƒŠƒXƒg‚É’Ç‰Á
+            // å„MyTodoItemã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’CSVå½¢å¼ã«å¤‰æ›ã—ã¦ãƒªã‚¹ãƒˆã«è¿½åŠ 
             foreach (var todo in todos)
             {
                 var line = $"{todo.Day:yyyy-MM-dd},{todo.Time:HH:mm},{todo.Title},{todo.Description},{todo.Result}";
                 csvLines.Add(line);
             }
 
-            // ƒtƒ@ƒCƒ‹‚É‘‚«‚Ş
+            // ãƒ•ã‚¡ã‚¤ãƒ«ã«æ›¸ãè¾¼ã‚€
             System.IO.File.WriteAllLines(filePath, csvLines);
         }
         private List<MyTodoItem> ReadTodoItemsFromCsv(string filePath)
@@ -240,19 +238,19 @@ namespace TsnEducation2024.Controllers
 
             try
             {
-                // CSVƒtƒ@ƒCƒ‹‚Ì‘Ss‚ğ“Ç‚İ‚Ş
+                // CSVãƒ•ã‚¡ã‚¤ãƒ«ã®å…¨è¡Œã‚’èª­ã¿è¾¼ã‚€
                 var lines = System.IO.File.ReadAllLines(filePath);
 
-                // 1s–Ú‚Íƒwƒbƒ_[s‚Å‚ ‚é‚Æ‰¼’è‚µ‚ÄAƒXƒLƒbƒv‚·‚é
+                // 1è¡Œç›®ã¯ãƒ˜ãƒƒãƒ€ãƒ¼è¡Œã§ã‚ã‚‹ã¨ä»®å®šã—ã¦ã€ã‚¹ã‚­ãƒƒãƒ—ã™ã‚‹
                 foreach (var line in lines.Skip(1))
                 {
-                    // ƒJƒ“ƒ}‚Å‹æØ‚ç‚ê‚½’l‚ğæ“¾
+                    // ã‚«ãƒ³ãƒã§åŒºåˆ‡ã‚‰ã‚ŒãŸå€¤ã‚’å–å¾—
                     var values = line.Split(',');
 
-                    // •K—v‚ÈƒtƒB[ƒ‹ƒh”‚ª‚ ‚é‚©Šm”F
+                    // å¿…è¦ãªãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰æ•°ãŒã‚ã‚‹ã‹ç¢ºèª
                     if (values.Length >= 5)
                     {
-                        // MyTodoItemƒIƒuƒWƒFƒNƒg‚ğì¬
+                        // MyTodoItemã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆ
                         var todo = new MyTodoItem
                         {
                             Day = DateTime.Parse(values[0]),
@@ -262,15 +260,15 @@ namespace TsnEducation2024.Controllers
                             Result = values[4]
                         };
 
-                        // ƒŠƒXƒg‚É’Ç‰Á
+                        // ãƒªã‚¹ãƒˆã«è¿½åŠ 
                         todos.Add(todo);
                     }
                 }
             }
             catch (Exception ex)
             {
-                // ƒGƒ‰[ƒnƒ“ƒhƒŠƒ“ƒO: ƒƒO‚ğ‹L˜^‚·‚é‚©A“KØ‚Èˆ—‚ğs‚¤
-                Console.WriteLine("CSV“Ç‚İ‚İ’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½: " + ex.Message);
+                // ã‚¨ãƒ©ãƒ¼ãƒãƒ³ãƒ‰ãƒªãƒ³ã‚°: ãƒ­ã‚°ã‚’è¨˜éŒ²ã™ã‚‹ã‹ã€é©åˆ‡ãªå‡¦ç†ã‚’è¡Œã†
+                Console.WriteLine("CSVèª­ã¿è¾¼ã¿ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ: " + ex.Message);
             }
 
             return todos;
@@ -285,7 +283,7 @@ namespace TsnEducation2024.Controllers
 
         public ActionResult list()
         {
-            // ƒfƒtƒHƒ‹ƒg‚Å•\¦‚·‚éƒy[ƒW‚ğuˆê——v‚Éİ’è
+            // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§è¡¨ç¤ºã™ã‚‹ãƒšãƒ¼ã‚¸ã‚’ã€Œä¸€è¦§ã€ã«è¨­å®š
             var defaultlist = "list";
             return RedirectToAction("List", new { day = defaultlist });
         }
@@ -293,7 +291,7 @@ namespace TsnEducation2024.Controllers
         public ActionResult week(string day)
         {
             ViewBag.SelectedDay = day;
-            // •K—v‚Èƒf[ƒ^‚ğƒrƒ…[‚É“n‚µ‚ÄuDayvƒrƒ…[‚ğ•Ô‚·
+            // å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’ãƒ“ãƒ¥ãƒ¼ã«æ¸¡ã—ã¦ã€ŒDayã€ãƒ“ãƒ¥ãƒ¼ã‚’è¿”ã™
             return View("day");
         }
 
@@ -303,7 +301,7 @@ namespace TsnEducation2024.Controllers
 
             return View("List");
         }
-        /// <param name="filePath">ì¬æ‚ÌƒpƒX</param>
+        /// <param name="filePath">ä½œæˆå…ˆã®ãƒ‘ã‚¹</param>
         public void CreateFile(string filePath)
         {
             if (System.IO.File.Exists(filePath))
@@ -323,20 +321,20 @@ namespace TsnEducation2024.Controllers
 
         public ActionResult Day(string day)
         {
-            var selectedTodoItems = GetTodoItemsForDay(day); // `GetTodoItemsForDay` ƒƒ\ƒbƒh‚Í‰¼’è
+            var selectedTodoItems = GetTodoItemsForDay(day); // `GetTodoItemsForDay` ãƒ¡ã‚½ãƒƒãƒ‰ã¯ä»®å®š
             ViewBag.SelectedDay = day;
-            return View(selectedTodoItems); // Day.cshtml ‚ª“KØ‚Èƒ‚ƒfƒ‹‚ğó‚¯æ‚é‚±‚Æ‚ğŠm”F
+            return View(selectedTodoItems); // Day.cshtml ãŒé©åˆ‡ãªãƒ¢ãƒ‡ãƒ«ã‚’å—ã‘å–ã‚‹ã“ã¨ã‚’ç¢ºèª
         }
 
         private List<MyTodoItem> GetTodoItemsForDay(string day)
         {
-            // day ‚ÉŠî‚Ã‚¢‚ÄƒŠƒXƒg‚ğƒtƒBƒ‹ƒ^ƒŠƒ“ƒO‚·‚éƒƒWƒbƒN‚ğ’Ç‰Á
-            return new List<MyTodoItem>(); // —á‚Æ‚µ‚Ä‹ó‚ÌƒŠƒXƒg‚ğ•Ô‚·
+            // day ã«åŸºã¥ã„ã¦ãƒªã‚¹ãƒˆã‚’ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°ã™ã‚‹ãƒ­ã‚¸ãƒƒã‚¯ã‚’è¿½åŠ 
+            return new List<MyTodoItem>(); // ä¾‹ã¨ã—ã¦ç©ºã®ãƒªã‚¹ãƒˆã‚’è¿”ã™
         }
 
         public ActionResult Index()
         {
-            var model = new MyViewModel { IsChecked = true }; // ƒfƒtƒHƒ‹ƒg‚Åƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒIƒ“‚É‚È‚é—á
+            var model = new MyViewModel { IsChecked = true }; // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚ªãƒ³ã«ãªã‚‹ä¾‹
             return View(model);
         }
 
@@ -344,11 +342,11 @@ namespace TsnEducation2024.Controllers
         {
             if (model.IsChecked)
             {
-                // ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒIƒ“‚Ìê‡‚Ìˆ—
+                // ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚ªãƒ³ã®å ´åˆã®å‡¦ç†
             }
             else
             {
-                // ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ªƒIƒt‚Ìê‡‚Ìˆ—
+                // ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ãŒã‚ªãƒ•ã®å ´åˆã®å‡¦ç†
             }
 
             return View(model);

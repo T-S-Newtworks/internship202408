@@ -1,113 +1,113 @@
-@model List<TsnEducation2024.Models.MyTodoItem>
-    @{
-    ViewBag.Title = "TodoƒŠƒXƒg";
-    }
-    <main aria-labelledby="title">
-        <div class="row">
-            @if (TempData["SuccessMessage"] != null)
-            {
+ï»¿@model List<TsnEducation2024.Models.MyTodoItem>
+@{
+    ViewBag.Title = "Todoãƒªã‚¹ãƒˆ";
+}
+<main aria-labelledby="title">
+    <div class="row">
+        @if (TempData["SuccessMessage"] != null)
+        {
             <div class="alert alert-success alert-fade d-flex flex-row justify-content-between" role="alert">
                 <span>
                     @TempData["SuccessMessage"]
                 </span>
                 <button type="button" class="btn-close" aria-label="Close"></button>
             </div>
-            }
-            <div class="d-flex flex-row justify-content-between mb-3">
-                <h3>MyTodo</h3>
-                @Html.ActionLink("ƒTƒ“ƒvƒ‹ˆê——‰æ–Ê‚Ö–ß‚é", "Sample", "Home", new { area = "" }, new { @class = "sample-link" })
+        }
+        <div class="d-flex flex-row justify-content-between mb-3">
+            <h3>MyTodo</h3>
+            @Html.ActionLink("ã‚µãƒ³ãƒ—ãƒ«ä¸€è¦§ç”»é¢ã¸æˆ»ã‚‹", "Sample", "Home", new { area = "" }, new { @class = "sample-link" })
+        </div>
+        <form>
+            <div class="d-flex flex-row justify-content-end gap-2">
+                <button class="btn btn-primary" type="button" id="insertbutton">TODOè¿½åŠ </button>
+                <button class="btn btn-primary" type="button" id="todosearch">æ¤œç´¢ç”»é¢ã¸</button>
+                @*<button class="btn btn-primary" type="button" id="todosave">ä¿å­˜</button>*@
             </div>
-            <form>
-                <div class="d-flex flex-row justify-content-end gap-2">
-                    <button class="btn btn-primary" type="button" id="insertbutton">TODO’Ç‰Á</button>
-                    <button class="btn btn-primary" type="button" id="todosearch">ŒŸõ‰æ–Ê‚Ö</button>
-                    @*<button class="btn btn-primary" type="button" id="todosave">•Û‘¶</button>*@
-                </div>
-            </form>
-            <div id="todoListTable">
-                @using (Html.BeginForm("SaveTodoItems", "Todo", FormMethod.Post))
-                {
-                <!-- ã‚ÉƒXƒy[ƒX‚ğ‚½‚¹‚é‚½‚ß‚Éƒ}[ƒWƒ“‚ğ’²® -->
+        </form>
+        <div id="todoListTable">
+            @using (Html.BeginForm("SaveTodoItems", "Todo", FormMethod.Post))
+            {
+                <!-- ä¸Šã«ã‚¹ãƒšãƒ¼ã‚¹ã‚’æŒãŸã›ã‚‹ãŸã‚ã«ãƒãƒ¼ã‚¸ãƒ³ã‚’èª¿æ•´ -->
                 <div class="d-flex flex-column align-items-end mb-2">
-                    <button class="btn btn-primary" type="button" id="resultTodo">Œ‹‰Ê‰æ–Ê‚Ö</button>
+                    <button class="btn btn-primary" type="button" id="resultTodo">çµæœç”»é¢ã¸</button>
                 </div>
                 <div style="display:flex; flex-direction:row; justify-content:space-between;">
-                    <h4>TODOƒŠƒXƒgˆê——</h4>
+                    <h4>TODOãƒªã‚¹ãƒˆä¸€è¦§</h4>
                 </div>
                 <div class="weekdays">
-                    <a href="@Url.Action(" Day","Todo",new {day="Monday" })" class="weekday-link @((ViewBag.SelectedDay == " Monday") ? "active" : "" )">Œ</a>
-                    <a href="@Url.Action(" Day","Todo",new {day="Tuesday" })" class="weekday-link @((ViewBag.SelectedDay == " Tuesday") ? "active" : "" )">‰Î</a>
-                    <a href="@Url.Action(" Day","Todo",new {day="Wednesday" })" class="weekday-link @((ViewBag.SelectedDay == " Wednesday") ? "active" : "" )">…</a>
-                    <a href="@Url.Action(" Day","Todo",new {day="Thursday" })" class="weekday-link @((ViewBag.SelectedDay == " Thursday") ? "active" : "" )">–Ø</a>
-                    <a href="@Url.Action(" Day","Todo",new {day="Friday" })" class="weekday-link @((ViewBag.SelectedDay == " Friday") ? "active" : "" )">‹à</a>
-                    <a href="@Url.Action(" Day","Todo",new {day="Saturday" })" class="weekday-link @((ViewBag.SelectedDay == " Saturday") ? "active" : "" )">“y</a>
-                    <a href="@Url.Action(" Day","Todo",new {day="Sunday" })" class="weekday-link @((ViewBag.SelectedDay == " Sunday") ? "active" : "" )">“ú</a>
-                    <a href="@Url.Action(" Day","Todo",new {day="list" })" class="weekday-link @((ViewBag.SelectedDay == " list") ? "active" : "" )">ˆê——</a>
+                    <a href="@Url.Action(" Day","Todo",new {day="Monday" })" class="weekday-link @((ViewBag.SelectedDay == " Monday") ? "active" : "" )">æœˆ</a>
+                    <a href="@Url.Action(" Day","Todo",new {day="Tuesday" })" class="weekday-link @((ViewBag.SelectedDay == " Tuesday") ? "active" : "" )">ç«</a>
+                    <a href="@Url.Action(" Day","Todo",new {day="Wednesday" })" class="weekday-link @((ViewBag.SelectedDay == " Wednesday") ? "active" : "" )">æ°´</a>
+                    <a href="@Url.Action(" Day","Todo",new {day="Thursday" })" class="weekday-link @((ViewBag.SelectedDay == " Thursday") ? "active" : "" )">æœ¨</a>
+                    <a href="@Url.Action(" Day","Todo",new {day="Friday" })" class="weekday-link @((ViewBag.SelectedDay == " Friday") ? "active" : "" )">é‡‘</a>
+                    <a href="@Url.Action(" Day","Todo",new {day="Saturday" })" class="weekday-link @((ViewBag.SelectedDay == " Saturday") ? "active" : "" )">åœŸ</a>
+                    <a href="@Url.Action(" Day","Todo",new {day="Sunday" })" class="weekday-link @((ViewBag.SelectedDay == " Sunday") ? "active" : "" )">æ—¥</a>
+                    <a href="@Url.Action(" Day","Todo",new {day="list" })" class="weekday-link @((ViewBag.SelectedDay == " list") ? "active" : "" )">ä¸€è¦§</a>
                 </div>
                 <label class="checkbox-label">
-                    Œ‹‰Ê‚ªŠm’è‚µ‚½‚à‚Ì‚Ì•\¦
+                    çµæœãŒç¢ºå®šã—ãŸã‚‚ã®ã®è¡¨ç¤º
                     <input type="checkbox" name="myCheckbox" value="true" checked />
                 </label>
                 <table class="table table-bordered" id="todoTable">
                     <thead>
                         <tr>
-                            <th scope="col">“ú•t</th>
-                            <th scope="col">ŠúŒÀ</th>
-                            <th scope="col">ƒ^ƒCƒgƒ‹</th>
-                            <th scope="col">à–¾</th>
-                            <th scope="col">Œ‹‰Ê</th>
+                            <th scope="col">æ—¥ä»˜</th>
+                            <th scope="col">æœŸé™</th>
+                            <th scope="col">ã‚¿ã‚¤ãƒˆãƒ«</th>
+                            <th scope="col">èª¬æ˜</th>
+                            <th scope="col">çµæœ</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             @{string style = string.Empty;
-                            if (Model.Any())
-                            {
-                            style = "display:none;";
-                            }
-                            <td colspan="5" id="defaultFirstRow" style="text-align: center; @style">•\¦‚·‚é€–Ú‚ª‚ ‚è‚Ü‚¹‚ñB</td>
+                                if (Model.Any())
+                                {
+                                    style = "display:none;";
+                                }
+                                <td colspan="5" id="defaultFirstRow" style="text-align: center; @style">è¡¨ç¤ºã™ã‚‹é …ç›®ãŒã‚ã‚Šã¾ã›ã‚“ã€‚</td>
                             }
                         </tr>
 
                         @foreach (var item in Model)
                         {
-                        <tr>
-                            <td>@item.Day.ToString("yyyy-MM-dd")</td>
-                            <td>@item.Time.ToString("HH:mm")</td>
-                            <td>@item.Title</td>
-                            <td>@item.Description</td>
-                            <td>
-                                <button class="maru" onclick="updateResult(@item.Id,true)">Z</button>
-                                <button class="batu" onclick="updateResult(@item.Id,false)">~</button>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>@item.Day.ToString("yyyy-MM-dd")</td>
+                                <td>@item.Time.ToString("HH:mm")</td>
+                                <td>@item.Title</td>
+                                <td>@item.Description</td>
+                                <td>
+                                    <button class="maru" onclick="updateResult(@item.Id,true)">ã€‡</button>
+                                    <button class="batu" onclick="updateResult(@item.Id,false)">Ã—</button>
+                                </td>
+                            </tr>
                         }
                     </tbody>
                 </table>
-                }
-            </div>
+            }
         </div>
-    </main>
-    @section scripts
+    </div>
+</main>
+@section scripts
     {
     <script type="text/javascript">$(document).ready(function () {
-            // ’Ç‰Áƒ{ƒ^ƒ“‚ÌƒNƒŠƒbƒNƒCƒxƒ“ƒgİ’è
+            // è¿½åŠ ãƒœã‚¿ãƒ³ã®ã‚¯ãƒªãƒƒã‚¯ã‚¤ãƒ™ãƒ³ãƒˆè¨­å®š
             $('#insertbutton').click(function (e) {
-                // postˆ—–h~
+                // postå‡¦ç†é˜²æ­¢
                 e.preventDefault();
 
-                // ’Ç‰Á‰æ–Ê‚Ö‘JˆÚ
-                window.location.href = 'http://localhost:44369/MyTodo/MyTodoInsert'; // ‘JˆÚæ‚ÌURL‚ğw’è
+                // è¿½åŠ ç”»é¢ã¸é·ç§»
+                window.location.href = 'http://localhost:44369/MyTodo/MyTodoInsert'; // é·ç§»å…ˆã®URLã‚’æŒ‡å®š
             });
 
-            // ŒŸõƒ{ƒ^ƒ“‚ÌƒNƒŠƒbƒNƒCƒxƒ“ƒgİ’è
+            // æ¤œç´¢ãƒœã‚¿ãƒ³ã®ã‚¯ãƒªãƒƒã‚¯ã‚¤ãƒ™ãƒ³ãƒˆè¨­å®š
              $('#todosearch').click(function (e) {
-                // postˆ—–h~
+                // postå‡¦ç†é˜²æ­¢
                 e.preventDefault();
 
-                // ŒŸõ‰æ–Ê‚Ö‘JˆÚ
-                window.location.href = 'http://localhost:44369/MyTodo/MyTodoSearch'; // ŒŸõ‰æ–Ê‚ÌURL‚ğw’è
-                                // “ü—ÍƒeƒLƒXƒg‚ğ‹ó‚É‚·‚é
+                // æ¤œç´¢ç”»é¢ã¸é·ç§»
+                window.location.href = 'http://localhost:44369/MyTodo/MyTodoSearch'; // æ¤œç´¢ç”»é¢ã®URLã‚’æŒ‡å®š
+                                // å…¥åŠ›ãƒ†ã‚­ã‚¹ãƒˆã‚’ç©ºã«ã™ã‚‹
                 $('#todoTitle').val('');
                 document.getElementById('defaultLink').classList.add('active');
             });
@@ -119,11 +119,11 @@
                     return false;
                 }
                             var form = document.getElementById('todoForm');
-                form.action = 'http://localhost:44369/MyTodo/SaveTodoItems'; // ³‚µ‚¢ URL ‚Éİ’è
-                form.method = 'post'; // ƒƒ\ƒbƒh‚ğ POST ‚Éİ’è
+                form.action = 'http://localhost:44369/MyTodo/SaveTodoItems'; // æ­£ã—ã„ URL ã«è¨­å®š
+                form.method = 'post'; // ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ POST ã«è¨­å®š
 
 
-                // Šù‘¶‚Ì‰B‚µƒtƒB[ƒ‹ƒh‚ğíœ
+                // æ—¢å­˜ã®éš ã—ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’å‰Šé™¤
                 var existingHiddenFields = form.querySelectorAll('input[type="hidden"]');
                 existingHiddenFields.forEach(function (field) {
                     field.remove();
@@ -172,7 +172,7 @@
                 });
      form.submit();
          });
-      // ~ƒ{ƒ^ƒ“‰Ÿ‰ºˆ—
+      // Ã—ãƒœã‚¿ãƒ³æŠ¼ä¸‹å‡¦ç†
             $('.btn-close').click(function (e) {
                 var closeElem = $(this).closest('div');
                 closeElem.remove();
@@ -180,125 +180,125 @@
         });
 
         function addTasks(task) {
-            // ’Ç‰Áƒ{ƒ^ƒ“‰Ÿ‰º‚Ìˆ—
+            // è¿½åŠ ãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚ã®å‡¦ç†
             var defaultFirstRow = $('#defaultFirstRow');
 
-            // ƒfƒtƒHƒ‹ƒgs‚ğæ“¾
+            // ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè¡Œã‚’å–å¾—
             defaultFirstRow.hide();
-            // tbody—v‘f‚ğæ“¾
+            // tbodyè¦ç´ ã‚’å–å¾—
             var todoTableBody = $('#todoTable tbody')[0];
-            // tbody—v‘f‚ÉÅ‰ºs‚ğ’Ç‰Á
+            // tbodyè¦ç´ ã«æœ€ä¸‹è¡Œã‚’è¿½åŠ 
             var trElem = todoTableBody.insertRow(-1);
-            // td—v‘f(ƒZƒ‹—v‘f)‚ğ’Ç‰Á
+            // tdè¦ç´ (ã‚»ãƒ«è¦ç´ )ã‚’è¿½åŠ 
             var DayCellElem = trElem.insertCell(0);
             var TimeCellElem = trElem.insertCell(1);
             var TitleCellElem = trElem.insertCell(2);
             var DescriptionCellElem = trElem.insertCell(3);
             var ResultCellElem = trElem.insertCell(4);
-            // “ú•t—ñ
+            // æ—¥ä»˜åˆ—
 
-            // ŠúŒÀ—ñ
+            // æœŸé™åˆ—
 
-            // ƒ^ƒCƒgƒ‹—ñ
+            // ã‚¿ã‚¤ãƒˆãƒ«åˆ—
             var titleCell = document.createElement('span');
             titleCell.className = "todotit";
             titleCell.innerHTML = task;
             TitleCellElem.appendChild(titleCell);
-            // à–¾—ñ
+            // èª¬æ˜åˆ—
             var descriptionCell = document.createElement('span');
             descriptionCell.className = "tododes";
             descriptionCell.innerHTML = task;
             DescriptionCellElem.appendChild(descriptionCell);
-            // Œ‹‰Ê—ñ
+            // çµæœåˆ—
         }</script>
+}
+<style>
+    .sample-link {
+        text-decoration: underline;
+        padding-left: calc(var(--bs-gutter-x)* 0.5);
+        font-size: 1.5rem;
+        width: auto;
     }
-    <style>
-        .sample-link {
-            text-decoration: underline;
-            padding-left: calc(var(--bs-gutter-x)* 0.5);
-            font-size: 1.5rem;
-            width: auto;
+
+    #todoListTable {
+        width: 100%;
+        height: 400px;
+        border-radius: 1rem;
+        margin-top: 2rem;
+    }
+
+    .table-bordered th:first-child {
+        width: 10%;
+        min-width: 80px;
+    }
+
+    .table-bordered td:first-child {
+        width: 10%;
+        min-width: 80px;
+    }
+
+    .todoContents {
+        vertical-align: inherit;
+    }
+
+    .left-margin-button {
+        display: flex;
+        justify-content: flex-start; /* ã“ã“ã§å·¦ã«å¯„ã›ãŸã„è·é›¢ã‚’æŒ‡å®š */
+    }
+
+    .weekdays {
+        display: flex;
+        flex-wrap: wrap; /* è¤‡æ•°è¡Œã«ã™ã‚‹å ´åˆ */
+        justify-content: center; /* æ°´å¹³ä¸­å¤®æƒãˆ */
+        margin-bottom: 20px; /* ä¸‹ã«å°‘ã—ã‚¹ãƒšãƒ¼ã‚¹ã‚’è¿½åŠ  */
+        position: relative;
+    }
+
+        .weekdays a {
+            margin: 0 8px; /* å·¦å³ã«8pxã®ã‚¹ãƒšãƒ¼ã‚¹ã‚’è¿½åŠ  */
+            font-weight: bold; /* ãƒ†ã‚­ã‚¹ãƒˆã‚’å¤ªå­—ã« */
         }
 
-        #todoListTable {
-            width: 100%;
-            height: 400px;
-            border-radius: 1rem;
-            margin-top: 2rem;
+    .weekday-link {
+        text-decoration: none;
+        color: blue; /* é€šå¸¸ã®ãƒªãƒ³ã‚¯ã®è‰² */
+        padding: 5px 10px;
+        margin: 0 5px;
+        border-radius: 3px;
+    }
+
+        .weekday-link.active {
+            color: purple; /* é¸æŠã•ã‚ŒãŸãƒªãƒ³ã‚¯ã®è‰² */
+            font-weight: bold;
         }
 
-        .table-bordered th:first-child {
-            width: 10%;
-            min-width: 80px;
+    .checkbox-label {
+        display: block;
+        text-align: center; /* ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã‚’ä¸­å¤®ã«é…ç½® */
+        margin-top: 0px; /* ä¸Šã«ã‚¹ãƒšãƒ¼ã‚¹ã‚’è¿½åŠ  */
+    }
+
+        .checkbox-label input {
+            margin-left: 5px; /* ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã¨ãƒ©ãƒ™ãƒ«ã®é–“ã«ã‚¹ãƒšãƒ¼ã‚¹ã‚’è¿½åŠ  */
         }
 
-        .table-bordered td:first-child {
-            width: 10%;
-            min-width: 80px;
-        }
+    .maru, .batu {
+        border: none;
+        background-color: transparent;
+        font-size: 1.5em;
+        cursor: pointer;
+    }
 
-        .todoContents {
-            vertical-align: inherit;
-        }
+    .maru {
+        color: green;
+    }
 
-        .left-margin-button {
-            display: flex;
-            justify-content: flex-start; /* ‚±‚±‚Å¶‚ÉŠñ‚¹‚½‚¢‹——£‚ğw’è */
-        }
+    .batu {
+        color: red;
+    }
 
-        .weekdays {
-            display: flex;
-            flex-wrap: wrap; /* •¡”s‚É‚·‚éê‡ */
-            justify-content: center; /* …•½’†‰›‘µ‚¦ */
-            margin-bottom: 20px; /* ‰º‚É­‚µƒXƒy[ƒX‚ğ’Ç‰Á */
-            position: relative;
-        }
-
-            .weekdays a {
-                margin: 0 8px; /* ¶‰E‚É8px‚ÌƒXƒy[ƒX‚ğ’Ç‰Á */
-                font-weight: bold; /* ƒeƒLƒXƒg‚ğ‘¾š‚É */
-            }
-
-        .weekday-link {
-            text-decoration: none;
-            color: blue; /* ’Êí‚ÌƒŠƒ“ƒN‚ÌF */
-            padding: 5px 10px;
-            margin: 0 5px;
-            border-radius: 3px;
-        }
-
-            .weekday-link.active {
-                color: purple; /* ‘I‘ğ‚³‚ê‚½ƒŠƒ“ƒN‚ÌF */
-                font-weight: bold;
-            }
-
-        .checkbox-label {
-            display: block;
-            text-align: center; /* ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ğ’†‰›‚É”z’u */
-            margin-top: 0px; /* ã‚ÉƒXƒy[ƒX‚ğ’Ç‰Á */
-        }
-
-            .checkbox-label input {
-                margin-left: 5px; /* ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚Æƒ‰ƒxƒ‹‚ÌŠÔ‚ÉƒXƒy[ƒX‚ğ’Ç‰Á */
-            }
-
-            .maru, .batu{
-                border: none;
-                background-color: transparent;
-                font-size: 1.5em;
-                cursor: pointer;
-            }
-
-            .maru{
-                color: green;
-            }
-
-            .batu{
-                color: red;
-            }
-
-        /*        .alert-fade {
+    /*        .alert-fade {
             transition: opacity 3s;
             }
             */
-    </style>
+</style>

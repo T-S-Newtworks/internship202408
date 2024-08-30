@@ -34,7 +34,7 @@ namespace TsnEducation2024.Controllers
                             Time = DateTime.Parse(rowValues[1]),
                             Title = rowValues[2],
                             Description = rowValues[3],
-                            Result = rowValues[4]//Œã‚Å¡‚·
+                            Result = rowValues[4]//å¾Œã§æ²»ã™
                         });
                     }
                 }
@@ -64,13 +64,13 @@ namespace TsnEducation2024.Controllers
                 }
             }
 
-            TempData["SuccessMessage"] = "TodoƒŠƒXƒg‚ğ•Û‘¶‚µ‚Ü‚µ‚½B";
+            TempData["SuccessMessage"] = "Todoãƒªã‚¹ãƒˆã‚’ä¿å­˜ã—ã¾ã—ãŸã€‚";
 
             return RedirectToAction("Index");
         }
 
 
-        /// <param name="filePath">ì¬æ‚ÌƒpƒX</param>
+        /// <param name="filePath">ä½œæˆå…ˆã®ãƒ‘ã‚¹</param>
         public void CreateFile(string filePath)
         {
             if (System.IO.File.Exists(filePath))
