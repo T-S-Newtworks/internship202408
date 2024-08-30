@@ -1,0 +1,398 @@
+@model List<TsnEducation2024.Models.SearchItem>
+@{
+    ViewBag.Title = "Todoリスト";
+}
+<main aria-labellebdy="title">
+    <div class="row">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-fade d-flex flex-row justify-content-between" role="alert">
+                <span>
+                    @TempData["SuccessMessage"]
+                </span>
+                <button type="button" class="btn-close" aria-label="Close"></button>
+            </div>
+        }
+        <div class="d-flex flex-row justify-content-between mb-3">
+            <h3>MyTodo</h3>
+            @Html.ActionLink("MyTodo覧画面へ戻る", "MyTodoIndex", "MyTodo", new { area = "" }, new { @class = "MyTodo-link" })
+        </div>
+        <form method="post" action="@Url.Action("Search","Todo")">
+            <div class="form-container">
+                <div class="form-group">
+                    <input type="time" name="Time" required class="large-time-input" />
+                    <button class="btn btn-primary" type="button" id="timebutton">時間で検索</button>
+                </div>
+                <div class="form-group">
+                    <div class="date-container">
+                        <input type="date" name="Day" required class="date-input" />
+                        ～
+                        <input type="date" name="Day" required class="date-input" />
+                    </div>
+                    <button class="btn btn-primary" type="button" id="daybutton">日付で検索</button>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" id="todoTitle" name="title" placeholder="タイトルを入力" />
+                    <button class="btn btn-primary" type="button" id="titlebutton">タイトルで検索</button>
+                </div>
+                <div class="form-group">
+                    <input class="form-control" type="text" id="todoDescription" placeholder="説明を入力" />
+                    <button class="btn btn-primary" type="button" id="descriptionbutton">説明で検索</button>
+                </div>
+            </div>
+        </form>
+
+        <div id="todoListTable">
+            @* MyTodo? *@
+            @using (Html.BeginForm("deleteTodoItems", "Todo", FormMethod.Post ,new { id = "todoForm" }))
+            {<div style="display:flex; flex-direction:row; justify-content:flex-end;">
+                    <div>
+                        <button class="btn btn-primary mb-2" type="button" id="todosave">保存</button>
+                    </div>
+                </div>
+                <div style="display:flex; flex-direction:row; justify-content:space-between;">
+                    <h4>TODOリスト一覧</h4>
+                </div>
+                <div class="weekdays">
+                    @*<a href="@Url.Action("Day","Todo",new {day = "Monday" })" class="weekday-link @((ViewBag.SelectedDay == "Monday") ? "active" : "")">月</a>
+                        <a href="@Url.Action("Day","Todo",new {day = "Tuesday" })" class="weekday-link @((ViewBag.SelectedDay == "Tuesday") ? "active" : "")">火</a>
+                        <a href="@Url.Action("Day","Todo",new {day = "Wednesday" })" class="weekday-link @((ViewBag.SelectedDay == "Wednesday") ? "active" : "")">水</a>
+                        <a href="@Url.Action("Day","Todo",new {day = "Thursday" })" class="weekday-link @((ViewBag.SelectedDay == "Thursday") ? "active" : "")">木</a>
+                        <a href="@Url.Action("Day","Todo",new {day = "Friday" })" class="weekday-link @((ViewBag.SelectedDay == "Friday") ? "active" : "")">金</a>
+                        <a href="@Url.Action("Day","Todo",new {day = "Saturday" })" class="weekday-link @((ViewBag.SelectedDay == "Saturday") ? "active" : "")">土</a>
+                        <a href="@Url.Action("Day","Todo",new {day = "Sunday" })" class="weekday-link @((ViewBag.SelectedDay == "Sunday") ? "active" : "")">日</a>*@
+                    <label class="checkbox-week">
+                        月
+                        <input type="checkbox" name="myCheckbox" value="true" checked />
+                        火
+                        <input type="checkbox" name="myCheckbox" value="true" checked />
+                        水
+                        <input type="checkbox" name="myCheckbox" value="true" checked />
+                        木
+                        <input type="checkbox" name="myCheckbox" value="true" checked />
+                        金
+                        <input type="checkbox" name="myCheckbox" value="true" checked />
+                        土
+                        <input type="checkbox" name="myCheckbox" value="true" checked />
+                        日
+                        <input type="checkbox" name="myCheckbox" value="true" checked />
+
+                        <a href="@Url.Action("Day","Todo",new {day = "list" })" class="weekday-link @((ViewBag.SelectedDay == "list") ? "active" : "")">一覧</a>
+                    </label>
+                </div>
+                <label class="checkbox-label">
+                    結果が確定したものの表示
+                    <input type="checkbox" name="myCheckbox" value="true" checked />
+                    削除の表示
+                    <input type="checkbox" name="myCheckbox" value="true" checked />
+                    更新の表示
+                    <input type="checkbox" name="myCheckbox" value="true" checked />
+                </label>
+                <table class="table table-bordered" id="todoTable">
+                    <thead>
+                        <tr>
+                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">削除</font></font></th>
+                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">更新</font></font></th>
+                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">日付</font></font></th>
+                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">期限</font></font></th>
+                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">タイトル</font></font></th>
+                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">説明</font></font></th>
+                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">結果</font></font></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @{string style = string.Empty;
+                                if (Model.Any())
+                                {
+                                    style = "display:none;";
+                                }
+                                <td colspan="7" id="defaultFirstRow" style="text-align: center; @style">表示する項目がありません。</td>
+                            }
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                @*<td> <input type="checkbox" name="deletecheck" value="@item.Id" /></td>*@
+                                <td class="text-center">
+                                    <button class="btn btn-outline-danger" type="button" id="deleteTodoItem">削除</button>
+                                </td>
+                                <td> <input type="checkbox" name="updatecheck" value="@item.Id" /></td>
+                                <td>@item.Day.ToShortDateString()</td>
+                                <td>@item.Time.ToShortTimeString()</td>
+                                <td>@item.Title</td>
+                                <td>@item.Description</td>
+                                @*<td><button class="maru" onclick="updateResult(@item.Id,true)">〇</button>
+                                <button class="batu" onclick="updateResult(@item.Id,false)">×</button></td>*@     
+                            </tr>
+                        }
+                        @*<tr>
+                                <td>
+                                    <input type="time" name="Time" required />
+                                </td>
+                            </tr>*@
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</main>
+@section scripts
+{
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            // タイトルで検索ボタンのクリックイベントリスナーを設定
+            document.getElementById('titlebutton').addEventListener('click', function () {
+                // 検索対象のタイトルを取得
+                var searchTitle = document.getElementById('todoTitle').value.toLowerCase();
+
+                var form = document.getElementById('todoForm');
+                form.action = 'http://localhost:44369/MyTodo/Search'; // 正しい URL に設定
+                form.method = 'post'; // メソッドを POST に設定
+
+                // テーブルの行を取得
+                var rows = document.querySelectorAll('#todoTable tbody tr');
+
+                // 行をループしてフィルタリング
+                rows.forEach(function (row) {
+                    // 各行のタイトルを取得
+                    var title = row.cells[2].textContent.toLowerCase(); // 4列目がタイトル
+
+                    // タイトルが検索文字列に含まれるかチェック
+                    if (title.includes(searchTitle)) {
+                        row.style.display = ''; // 一致する行は表示
+                    } else {
+                        row.style.display = 'none'; // 一致しない行は非表示
+                    }
+                });
+            });
+
+            document.getElementById('todosave').addEventListener('click', function () {
+                var tableBody = document.querySelector('#todoTable tbody');
+                var todoItems = tableBody.querySelectorAll('tr');
+
+                if (todoItems.length === 0) {
+                    return false;
+                }
+
+                var form = document.getElementById('todoForm');
+                form.action = 'http://localhost:44369/MyTodo/delTodoItems'; // 正しい URL に設定
+                form.method = 'post'; // メソッドを POST に設定
+
+
+                // 既存の隠しフィールドを削除
+                var existingHiddenFields = form.querySelectorAll('input[type="hidden"]');
+                existingHiddenFields.forEach(function (field) {
+                    field.remove();
+                });
+
+                todoItems.forEach(function (row, index) {
+                    var todoValues = row.children;
+
+                    if (index > 0 && todoValues.length > 1) {
+                        var postDay = document.createElement('input');
+                        postDay.type = 'hidden';
+                        postDay.name = `todoItems[${index-1}].Day`;
+                        postDay.value = todoValues[2].innerText;
+
+                        var postTime = document.createElement('input');
+                        postTime.type = 'hidden';
+                        postTime.name = `todoItems[${index-1}].Time`;
+                        postTime.value = todoValues[3].innerText;
+
+                        //var postTime = document.createElement('input');
+                        //postTime.type = 'hidden';
+                        //postTime.name = `todoItems[${index}].time1`;
+                        //postTime.value = todoValues[1].querySelector('input[type="time1"]').value;
+
+                        var postTitle = document.createElement('input');
+                        postTitle.type = 'hidden';
+                        postTitle.name = `todoItems[${index-1}].Title`;
+                        postTitle.value = todoValues[4].innerText;
+
+                        var postDescription = document.createElement('input');
+                        postDescription.type = 'hidden';
+                        postDescription.name = `todoItems[${index-1}].Description`;
+                        postDescription.value = todoValues[5].innerText;
+
+                        var postRepeat = document.createElement('input');
+                        postRepeat.type = 'hidden';
+                        postRepeat.name = `todoItems[${index-1}].Repeat`;
+                        postRepeat.value = todoValues[6].innerText;
+
+                        form.appendChild(postDay);
+                        form.appendChild(postTime);
+                        form.appendChild(postTitle);
+                        form.appendChild(postDescription);
+                        form.appendChild(postRepeat);
+                    }
+                });
+
+                form.submit();
+            });
+
+
+        });
+
+        // 削除ボタン押下時の処理
+        function deleteTasks(deleteBtn, todoTableBody, defaultFirstRow) {
+            //デフォルト行を取得
+            var defaultFirstRow = $('#defaultFirstRow');
+            // tbody要素を取得
+            var todoTableBody = $('#todoTable tbody')[0];
+
+            var deleteRow = deleteBtn.closest('tr');
+            deleteRow.remove();
+            //TODOをすべて消した場合はデフォルト行を表示
+            if (todoTableBody.rows.length == 1) {
+                defaultFirstRow.show();
+            }
+        };
+
+        //削除ボタンのクリックイベント設定
+        $(document).on('click', '#deleteTodoItem', function (e) {
+            e.preventDefault();
+            deleteTasks(this);
+        });
+
+
+
+    </script>
+}
+    <style>
+        .sample-link {
+            text-decoration: underline;
+            padding-left: calc(var(--bs-gutter-x)* 0.5);
+            font-size: 1.5rem;
+            width: auto;
+        }
+
+        #todoListTable {
+            width: 100%;
+            height: 400px;
+            border-radius: 1rem;
+            margin-top: 2rem;
+        }
+
+        .table-bordered th:first-child {
+            width: 10%;
+            min-width: 80px;
+        }
+
+        .table-bordered td:first-child {
+            width: 10%;
+            min-width: 80px;
+        }
+
+        .todoContents {
+            vertical-align: inherit;
+        }
+
+        .left-margin-button {
+            display: flex;
+            justify-content: flex-start; /* ここで左に寄せたい距離を指定 */
+        }
+
+        .weekdays {
+            display: flex;
+            flex-wrap: wrap; /* 複数行にする場合 */
+            justify-content: center; /* 水平中央揃え */
+            margin-bottom: 20px; /* 下に少しスペースを追加 */
+            position: relative;
+        }
+
+            .weekdays a {
+                margin: 0 8px; /* 左右に8pxのスペースを追加 */
+                font-weight: bold; /* テキストを太字に */
+            }
+
+        .weekday-link {
+            text-decoration: none;
+            color: blue; /* 通常のリンクの色 */
+            padding: 5px 10px;
+            margin: 0 5px;
+            border-radius: 3px;
+        }
+
+            .weekday-link.active {
+                color: purple; /* 選択されたリンクの色 */
+                font-weight: bold;
+            }
+
+        .checkbox-label {
+            display: block;
+            text-align: center; /* チェックボックスを中央に配置 */
+            margin-top: 0px; /* 上にスペースを追加 */
+        }
+
+        .checkbox-week {
+            display: block;
+            text-align: center; /* チェックボックスを中央に配置 */
+        }
+
+        .checkbox-label input {
+            margin-left: 5px; /* チェックボックスとラベルの間にスペースを追加 */
+        }
+
+        /*        .alert-fade {
+        transition: opacity 3s;
+        }
+        */
+        .form-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .form-group {
+            flex: 1 1 200px; /* Adjust width as needed */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Larger time input field */
+        .large-time-input {
+            max-width: 200px; /* Larger width for time input */
+            width: 100%;
+            margin-bottom: 0.5rem; /* Space between input and button */
+        }
+
+        .date-container {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 0.5rem; /* Space between date inputs and button */
+        }
+
+        .date-input {
+            flex: 1;
+            max-width: 150px; /* Adjust width as needed */
+        }
+
+        .form-control, .date-input {
+            max-width: 200px; /* Larger width for text inputs */
+            width: 100%; /* Full width within the container */
+        }
+
+        button {
+            max-width: 150px; /* Adjust button width */
+            width: 100%; /* Make button fill the width */
+        }
+
+        .maru, .batu {
+            border: none;
+            background-color: transparent;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .maru {
+            color: green;
+        }
+
+        .batu {
+            color: red;
+        }
+    </style>

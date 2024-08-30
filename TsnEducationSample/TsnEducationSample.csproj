@@ -141,6 +141,7 @@
     </Compile>
     <Compile Include="Models\InsertItem.cs" />
     <Compile Include="Models\MyTodoItem.cs" />
+    <Compile Include="Models\search.cs" />
     <Compile Include="Models\TodoItem.cs" />
     <Compile Include="Models\TsnSampleEducationContext.cs" />
     <Compile Include="Models\Users.cs" />
@@ -217,6 +218,7 @@
     <Content Include="Views\Users\Index.cshtml" />
     <Content Include="Views\MyTodo\MyTodoIndex.cshtml" />
     <Content Include="Views\MyTodo\MyTodoInsert.cshtml" />
+    <Content Include="Views\MyTodo\MyTodoSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

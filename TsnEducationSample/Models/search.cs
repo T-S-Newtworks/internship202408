@@ -7,9 +7,10 @@ using System.Web;
 namespace TsnEducation2024.Models
 {
 
-    public class MyTodoItem
+    public class SearchItem
     {
-        public int Id { get; set; }  // ID プロパティを追加
+
+        public int Id { get; set; }
         public DateTime Day { get; set; }
 
         public DateTime Time { get; set; }
@@ -25,7 +26,7 @@ namespace TsnEducation2024.Models
         //public string Repeat { get; set; }
     }
 
-    public class MyViewModel
+    public class SerchViewModel
     {
         public bool IsChecked { get; set; }
     }

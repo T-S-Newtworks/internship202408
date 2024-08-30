@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace TsnEducation2024.Controllers
         public ActionResult MyTodoIndex()
         {
             string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+
 
             List<MyTodoItem> todoItems = new List<MyTodoItem>();
 
@@ -39,14 +41,41 @@ namespace TsnEducation2024.Controllers
                     }
                 }
             }
-            return View(todoItems);
 
+            // TempData にデータを保存
+            TempData["TodoItems"] = todoItems;
+
+            return View(todoItems);
         }
         
         public ActionResult MyTodoInsert()
         {
             var todoItems = new List<MyTodoInsertItem>(); // データの取得または生成
             return View(todoItems);
+        }
+
+        public ActionResult MyTodoSearch()
+        {
+
+            var todoItems = TempData["TodoItems"] as List<MyTodoItem>;
+
+            if (todoItems != null)
+            {
+                // MyTodoItemからSearchItemに変換
+                var searchItems = todoItems.Select(item => new SearchItem
+                {
+                    Day = item.Day,
+                    Time = item.Time,
+                    Title = item.Title,
+                    Description = item.Description,
+                    Result = item.Result
+                }).ToList();
+
+                return View(searchItems);
+            }
+
+            // データがない場合は空のリストを渡す
+            return View(new List<SearchItem>());
         }
         public ActionResult SaveTodoItems(List<MyTodoItem> todoItems)
         {
@@ -72,7 +101,34 @@ namespace TsnEducation2024.Controllers
 
             TempData["SuccessMessage"] = "Todoリストを保存しました。";
 
-            return RedirectToAction("Index");
+            return RedirectToAction("MyTodoIndex");
+        }
+
+        public ActionResult delTodoItems(List<MyTodoItem> todoItems)
+        {
+            string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            CreateFile(filePath);
+            if (todoItems == null || !todoItems.Any())
+            {
+                System.IO.File.WriteAllText(filePath, string.Empty);
+            }
+            else
+            {
+                using (var overWriteFile = new StreamWriter(filePath, false, Encoding.GetEncoding("shift-jis")))
+                {
+                    StringBuilder sb = new StringBuilder();
+                    foreach (var item in todoItems)
+                    {
+                        sb.AppendLine($"{item.Day},{item.Time},{item.Title},{item.Description},{item.Result}");
+                    }
+
+                    overWriteFile.Write(sb.ToString());
+                }
+            }
+
+            TempData["SuccessMessage"] = "Todoリストを削除しました。";
+
+            return RedirectToAction("MyTodoIndex");
         }
 
         public ActionResult tuikaTodoItems(List<MyTodoInsertItem> todoItems)
@@ -89,7 +145,7 @@ namespace TsnEducation2024.Controllers
 
                 string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
 
-                using (var writer = new StreamWriter(filePath, true, Encoding.UTF8))
+                using (var writer = new StreamWriter(filePath, true, Encoding.GetEncoding("shift-jis")))
                 {
                     foreach (var item in todoItems)
                     {
@@ -106,7 +162,104 @@ namespace TsnEducation2024.Controllers
             return View("MyTodoInsert", todoItems);
         }
 
- 
+        [HttpPost]
+        public ActionResult Search(string title)
+        {
+            // CSVファイルからデータを読み込む
+            var filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            var todos = ReadTodoItemsFromCsv(filePath);
+
+            // タイトルでフィルタリング（大文字小文字を区別しない）
+            var filteredTodos = todos
+                .Where(item => item.Title.IndexOf(title, StringComparison.OrdinalIgnoreCase) >= 0)
+                .ToList();
+
+            // フィルタリングされたリストをビューに渡す
+            return View("MyTodoSearch", filteredTodos);
+        }
+
+        public ActionResult DeleteTodoItems(List<MyTodoItem> deleteItems)
+        {
+            var filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            var todos = ReadTodoItemsFromCsv(filePath);
+
+            // 削除するアイテムを特定
+            var remainingTodos = todos
+                .Where(todo => !deleteItems.Any(d => d.Day == todo.Day && d.Time == todo.Time && d.Title == todo.Title && d.Description == todo.Description && d.Result == todo.Result))
+                .ToList();
+
+            SaveTodoItemsToCsv(filePath, remainingTodos);
+
+            TempData["SuccessMessage"] = "選択した項目を削除しました。";
+            return RedirectToAction("MyTodoSearch");
+        }
+
+        private void SaveTodoItemsToCsv(string filePath, List<MyTodoItem> todos)
+        {
+            var csvLines = new List<string>();
+
+            // CSVヘッダー
+            csvLines.Add("Day,Time,Title,Description,Result");
+
+            // 各MyTodoItemオブジェクトをCSV形式に変換してリストに追加
+            foreach (var todo in todos)
+            {
+                var line = $"{todo.Day:yyyy-MM-dd},{todo.Time:HH:mm},{todo.Title},{todo.Description},{todo.Result}";
+                csvLines.Add(line);
+            }
+
+            // ファイルに書き込む
+            System.IO.File.WriteAllLines(filePath, csvLines);
+        }
+        private List<MyTodoItem> ReadTodoItemsFromCsv(string filePath)
+        {
+            var todos = new List<MyTodoItem>();
+
+            try
+            {
+                // CSVファイルの全行を読み込む
+                var lines = System.IO.File.ReadAllLines(filePath);
+
+                // 1行目はヘッダー行であると仮定して、スキップする
+                foreach (var line in lines.Skip(1))
+                {
+                    // カンマで区切られた値を取得
+                    var values = line.Split(',');
+
+                    // 必要なフィールド数があるか確認
+                    if (values.Length >= 5)
+                    {
+                        // MyTodoItemオブジェクトを作成
+                        var todo = new MyTodoItem
+                        {
+                            Day = DateTime.Parse(values[0]),
+                            Time = DateTime.Parse(values[1]),
+                            Title = values[2],
+                            Description = values[3],
+                            Result = values[4]
+                        };
+
+                        // リストに追加
+                        todos.Add(todo);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // エラーハンドリング: ログを記録するか、適切な処理を行う
+                Console.WriteLine("CSV読み込み中にエラーが発生しました: " + ex.Message);
+            }
+
+            return todos;
+        }
+
+        //public ActionResult SearchTodoItems(List<SerachItem> todoItems)
+        //{
+
+
+        //}
+
+
         public  ActionResult list()
         {
             // デフォルトで表示するページを「一覧」に設定

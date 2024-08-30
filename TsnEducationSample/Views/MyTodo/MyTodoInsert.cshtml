@@ -28,7 +28,7 @@
                 <div style="display:flex; flex-direction:row; justify-content:space-between;">
                     <h4>TODOリスト一覧</h4>
                 </div>
-                <div class="weekdays">
+                @*<div class="weekdays">
                     <a href="@Url.Action("Day", "Todo", new { day = "Monday" })">月</a>
                     <a href="@Url.Action("Day", "Todo", new { day = "Tuesday" })">火</a>
                     <a href="@Url.Action("Day", "Todo", new { day = "Wednesday" })">水</a>
@@ -37,7 +37,7 @@
                     <a href="@Url.Action("Day", "Todo", new { day = "Saturday" })">土</a>
                     <a href="@Url.Action("Day", "Todo", new { day = "Sunday" })">日</a>
                     <a href="@Url.Action("Day", "Todo", new { day = "list" })">一覧</a>
-                </div>
+                </div>*@
                 <table class="table table-bordered" id="todoTable">
                     <thead>
                         <tr>
@@ -178,6 +178,11 @@
                     postTime.name = `todoItems[${index}].Time`;
                     postTime.value = todoValues[1].querySelector('input[type="time"]').value;
 
+                    //var postTime = document.createElement('input');
+                    //postTime.type = 'hidden';
+                    //postTime.name = `todoItems[${index}].time1`;
+                    //postTime.value = todoValues[1].querySelector('input[type="time1"]').value;
+
                     var postTitle = document.createElement('input');
                     postTitle.type = 'hidden';
                     postTitle.name = `todoItems[${index}].Title`;
@@ -202,6 +207,18 @@
             });
 
             form.submit();
+        });
+
+
+        document.addEventListener('input', function (event) {
+            if (event.target.name === 'Repeat') {
+                const row = event.target.closest('tr');
+                const dayInput = row.querySelector('input[name="Day"]');
+                const dayOfWeek = parseRepeatToDay(event.target.value);
+                if (dayOfWeek) {
+                    dayInput.value = dayOfWeek.toISOString().split('T')[0]; // YYYY-MM-DD 形式で設定
+                }
+            }
         });
 
     </script>
@@ -263,18 +280,18 @@
     }
 
 
-    .weekdays {
+    /*.weekdays {
         display: flex;
-        flex-wrap: wrap; /* 複数行にする場合 */
-        justify-content: center; /* 水平中央揃え */
-        margin-bottom: 20px; /* 下に少しスペースを追加 */
-        position: relative;
+        flex-wrap: wrap;*/ /* 複数行にする場合 */
+        /*justify-content: center;*/ /* 水平中央揃え */
+        /*margin-bottom: 20px;*/ /* 下に少しスペースを追加 */
+        /*position: relative;
     }
 
         .weekdays a {
-            margin: 0 8px; /* 左右に8pxのスペースを追加 */
-            font-weight: bold; /* テキストを太字に */
-        }
+            margin: 0 8px;*/ /* 左右に8pxのスペースを追加 */
+            /*font-weight: bold;*/ /* テキストを太字に */
+        /*}*/
 
     form div {
         margin-bottom: 15px;

@@ -12,6 +12,8 @@ namespace TsnEducation2024.Models
 
         public DateTime Time { get; set; }
 
+        //public int time1 { get; set; }
+
         public string Title { get; set; }
 
         public string Description { get; set; }
