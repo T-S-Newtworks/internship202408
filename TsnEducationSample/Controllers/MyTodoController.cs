@@ -57,7 +57,6 @@ namespace TsnEducation2024.Controllers
 
         public ActionResult MyTodoSearch()
         {
-
             var todoItems = TempData["TodoItems"] as List<MyTodoItem>;
 
             if (todoItems != null)
@@ -76,6 +75,33 @@ namespace TsnEducation2024.Controllers
             }
 
             // データがない場合は空のリストを渡す
+            return View(new List<SearchItem>());
+        }
+
+        public ActionResult all(List<SearchItem> todoItems)
+        {
+            if (TempData["TodoItems"] == null)
+            {
+                // TempDataに何も設定されていない場合、ここにブレークポイントを設定して確認
+                return View(new List<SearchItem>());
+            }
+
+            var allItems = TempData["TodoItems"] as List<MyTodoItem>;
+
+            if (allItems != null)
+            {
+                var searchItems = allItems.Select(item => new SearchItem
+                {
+                    Day = item.Day,
+                    Time = item.Time,
+                    Title = item.Title,
+                    Description = item.Description,
+                    Result = item.Result
+                }).ToList();
+
+                return View(searchItems);
+            }
+
             return View(new List<SearchItem>());
         }
         public ActionResult SaveTodoItems(List<MyTodoItem> todoItems)
@@ -134,6 +160,72 @@ namespace TsnEducation2024.Controllers
             return RedirectToAction("MyTodoIndex");
         }
 
+        public ActionResult delTodoItem(MyTodoItem delItem)
+        {
+            //string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            string filePath = AppContext.BaseDirectory + @"\App_Data\todoItem.csv";
+            CreateFile(filePath);
+
+            //既存データを取得
+            List<MyTodoItem> todoItems = new List<MyTodoItem>();
+            using (var readFile = new StreamReader(filePath, Encoding.GetEncoding("shift-jis")))
+            {
+                while (!readFile.EndOfStream)
+                {
+                    string[] rowValues = readFile.ReadLine().Split(',');
+                    if (rowValues.Length <= 2)
+                    {
+                        continue;
+                    }
+
+                    //比較用データ
+                    var valItem = new MyTodoItem()
+                    {
+                        Day = DateTime.Parse(rowValues[0]),
+                        Time = DateTime.Parse(rowValues[1]),
+                        Title = rowValues[2] ?? "",
+                        Description = rowValues[3] ?? "",
+                        Result = rowValues[4] ?? ""
+                    };
+                    //nullを考慮して再代入
+                    delItem.Title = delItem.Title ?? "";
+                    delItem.Description = delItem.Description ?? "";
+
+                    //削除対象のデータは取得しない
+                    if (valItem.Day == delItem.Day && 
+                        valItem.Time == delItem.Time && 
+                        valItem.Title == delItem.Title && 
+                        valItem.Description == delItem.Description)
+                    {
+                        continue;
+                    }
+
+                    todoItems.Add(new MyTodoItem()
+                    {
+                        Day = DateTime.Parse(rowValues[0]),
+                        Time = DateTime.Parse(rowValues[1]),
+                        Title = rowValues[2],
+                        Description = rowValues[3],
+                        Result = rowValues[4]//後で治す
+                    });
+                }
+            }
+
+            //再取得したデータで保存し直す
+            using (var overWriteFile = new StreamWriter(filePath, false, Encoding.GetEncoding("shift-jis")))
+            {
+                StringBuilder sb = new StringBuilder();
+                foreach (var item in todoItems)
+                {
+                    sb.AppendLine($"{item.Day},{item.Time},{item.Title},{item.Description},{item.Result}");
+                }
+                overWriteFile.Write(sb.ToString());
+            }
+
+            TempData["SuccessMessage"] = "Todoリストを削除しました。";
+            return RedirectToAction("MyTodoIndex");
+        }
+
         public ActionResult tuikaTodoItems(List<MyTodoInsertItem> todoItems)
         {
             if (ModelState.IsValid)
@@ -189,6 +281,59 @@ namespace TsnEducation2024.Controllers
             return View("MyTodoSearch", serachItems);
         }
 
+        public ActionResult timeSearch(DateTime time)
+        {
+            string filePath = AppContext.BaseDirectory + @"\App_Data\todoItem.csv";
+            var todoItems = ReadTodoItemsFromFile(filePath);
+
+            // 時間が一致するタスクのみをフィルター
+            if (time != default(DateTime)) // timeがデフォルト値でないことを確認
+            {
+                todoItems = todoItems.Where(i => i.Time == time).ToList();
+            }
+
+            var searchItems = new List<SearchItem>();
+
+            foreach (var item in todoItems)
+            {
+                searchItems.Add(new SearchItem()
+                {
+                    Day = item.Day,
+                    Time = item.Time,
+                    Title = item.Title,
+                    Description = item.Description
+                });
+            }
+
+            return View("MyTodoSearch", searchItems);
+        }
+
+        public ActionResult daySearch(DateTime day)
+        {
+            string filePath = AppContext.BaseDirectory + @"\App_Data\todoItem.csv";
+            var todoItems = ReadTodoItemsFromFile(filePath);
+
+            // 日付が一致するタスクのみをフィルター
+            if (day != default(DateTime)) // dayがデフォルト値でないことを確認
+            {
+                todoItems = todoItems.Where(i => i.Day.Date == day.Date).ToList();
+            }
+
+            var searchItems = new List<SearchItem>();
+
+            foreach (var item in todoItems)
+            {
+                searchItems.Add(new SearchItem()
+                {
+                    Day = item.Day,
+                    Time = item.Time,
+                    Title = item.Title,
+                    Description = item.Description
+                });
+            }
+
+            return View("MyTodoSearch", searchItems);
+        }
         private List<MyTodoItem> ReadTodoItemsFromFile(string filePath)
         {
             var todoItems = new List<MyTodoItem>();

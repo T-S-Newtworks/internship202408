@@ -42,7 +42,7 @@
                     <a href="@Url.Action(" Day","Todo",new {day="Friday" })" class="weekday-link @((ViewBag.SelectedDay == " Friday") ? "active" : "" )">金</a>
                     <a href="@Url.Action(" Day","Todo",new {day="Saturday" })" class="weekday-link @((ViewBag.SelectedDay == " Saturday") ? "active" : "" )">土</a>
                     <a href="@Url.Action(" Day","Todo",new {day="Sunday" })" class="weekday-link @((ViewBag.SelectedDay == " Sunday") ? "active" : "" )">日</a>
-                    <a href="@Url.Action(" Day","Todo",new {day="list" })" class="weekday-link @((ViewBag.SelectedDay == " list") ? "active" : "" )">一覧</a>
+                    <a href="@Url.Action("MyTodoIndex", "MyTodo", new { area = "" })" class="weekday-link" id="all">一覧</a>
                 </div>
                 <label class="checkbox-label">
                     結果が確定したものの表示
@@ -97,7 +97,7 @@
                 e.preventDefault();
 
                 // 追加画面へ遷移
-                window.location.href = 'http://localhost:44369/MyTodo/MyTodoInsert'; // 遷移先のURLを指定
+                window.location.href = '/MyTodo/MyTodoInsert'; // 遷移先のURLを指定
             });
 
             // 検索ボタンのクリックイベント設定
@@ -106,72 +106,73 @@
                 e.preventDefault();
 
                 // 検索画面へ遷移
-                window.location.href = 'http://localhost:44369/MyTodo/MyTodoSearch'; // 検索画面のURLを指定
+                window.location.href = '/MyTodo/MyTodoSearch'; // 検索画面のURLを指定
                                 // 入力テキストを空にする
                 $('#todoTitle').val('');
                 document.getElementById('defaultLink').classList.add('active');
-            });
-            document.getElementById('todosave').addEventListener('click', function () {
-                var tableBody = document.querySelector('#todoTable tbody');
-                var todoItems = tableBody.querySelectorAll('tr');
+             });
 
-                if (todoItems.length === 0) {
-                    return false;
-                }
-                            var form = document.getElementById('todoForm');
-                form.action = 'http://localhost:44369/MyTodo/SaveTodoItems'; // 正しい URL に設定
-                form.method = 'post'; // メソッドを POST に設定
+     //       document.getElementById('todosave').addEventListener('click', function () {
+     //           var tableBody = document.querySelector('#todoTable tbody');
+     //           var todoItems = tableBody.querySelectorAll('tr');
+
+     //           if (todoItems.length === 0) {
+     //               return false;
+     //           }
+     //                       var form = document.getElementById('todoForm');
+     //           form.action = '/MyTodo/SaveTodoItems'; // 正しい URL に設定
+     //           form.method = 'post'; // メソッドを POST に設定
 
 
-                // 既存の隠しフィールドを削除
-                var existingHiddenFields = form.querySelectorAll('input[type="hidden"]');
-                existingHiddenFields.forEach(function (field) {
-                    field.remove();
-                });
+     //           // 既存の隠しフィールドを削除
+     //           var existingHiddenFields = form.querySelectorAll('input[type="hidden"]');
+     //           existingHiddenFields.forEach(function (field) {
+     //               field.remove();
+     //           });
 
-                todoItems.forEach(function (row, index) {
-                    var todoValues = row.children;
+     //           todoItems.forEach(function (row, index) {
+     //               var todoValues = row.children;
 
-                    if (todoValues.length > 1) {
-                        var postDay = document.createElement('input');
-                        postDay.type = 'hidden';
-                        postDay.name = `todoItems[${index}].Day`;
-                        postDay.value = todoValues[0].querySelector('input[type="date"]').value;
+     //               if (todoValues.length > 1) {
+     //                   var postDay = document.createElement('input');
+     //                   postDay.type = 'hidden';
+     //                   postDay.name = `todoItems[${index}].Day`;
+     //                   postDay.value = todoValues[0].querySelector('input[type="date"]').value;
 
-                        var postTime = document.createElement('input');
-                        postTime.type = 'hidden';
-                        postTime.name = `todoItems[${index}].Time`;
-                        postTime.value = todoValues[1].querySelector('input[type="time"]').value;
+     //                   var postTime = document.createElement('input');
+     //                   postTime.type = 'hidden';
+     //                   postTime.name = `todoItems[${index}].Time`;
+     //                   postTime.value = todoValues[1].querySelector('input[type="time"]').value;
 
-                        //var postTime = document.createElement('input');
-                        //postTime.type = 'hidden';
-                        //postTime.name = `todoItems[${index}].time1`;
-                        //postTime.value = todoValues[1].querySelector('input[type="time1"]').value;
+     //                   //var postTime = document.createElement('input');
+     //                   //postTime.type = 'hidden';
+     //                   //postTime.name = `todoItems[${index}].time1`;
+     //                   //postTime.value = todoValues[1].querySelector('input[type="time1"]').value;
 
-                        var postTitle = document.createElement('input');
-                        postTitle.type = 'hidden';
-                        postTitle.name = `todoItems[${index}].Title`;
-                        postTitle.value = todoValues[2].querySelector('input[type="text"]').value;
+     //                   var postTitle = document.createElement('input');
+     //                   postTitle.type = 'hidden';
+     //                   postTitle.name = `todoItems[${index}].Title`;
+     //                   postTitle.value = todoValues[2].querySelector('input[type="text"]').value;
 
-                        var postDescription = document.createElement('input');
-                        postDescription.type = 'hidden';
-                        postDescription.name = `todoItems[${index}].Description`;
-                        postDescription.value = todoValues[3].querySelector('textarea').value;
+     //                   var postDescription = document.createElement('input');
+     //                   postDescription.type = 'hidden';
+     //                   postDescription.name = `todoItems[${index}].Description`;
+     //                   postDescription.value = todoValues[3].querySelector('textarea').value;
 
-                        var postRepeat = document.createElement('input');
-                        postRepeat.type = 'hidden';
-                        postRepeat.name = `todoItems[${index}].Repeat`;
-                        postRepeat.value = todoValues[4].querySelector('input[type="text"]').value;
+     //                   var postRepeat = document.createElement('input');
+     //                   postRepeat.type = 'hidden';
+     //                   postRepeat.name = `todoItems[${index}].Repeat`;
+     //                   postRepeat.value = todoValues[4].querySelector('input[type="text"]').value;
 
-                        form.appendChild(postDay);
-                        form.appendChild(postTime);
-                        form.appendChild(postTitle);
-                        form.appendChild(postDescription);
-                        form.appendChild(postRepeat);
-                    }
-                });
-     form.submit();
-         });
+     //                   form.appendChild(postDay);
+     //                   form.appendChild(postTime);
+     //                   form.appendChild(postTitle);
+     //                   form.appendChild(postDescription);
+     //                   form.appendChild(postRepeat);
+     //               }
+     //           });
+     //form.submit();
+     //    });
       // ×ボタン押下処理
             $('.btn-close').click(function (e) {
                 var closeElem = $(this).closest('div');

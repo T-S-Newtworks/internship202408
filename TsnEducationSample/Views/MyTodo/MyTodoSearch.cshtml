@@ -20,14 +20,14 @@
         <form method="post" action="@Url.Action("Search","Todo")">
             <div class="form-container">
                 <div class="form-group">
-                    <input type="time" name="Time" required class="large-time-input" />
+                    <input type="time" name="Time" id="time" required class="large-time-input" />
                     <button class="btn btn-primary" type="button" id="timebutton">時間で検索</button>
                 </div>
                 <div class="form-group">
                     <div class="date-container">
-                        <input type="date" name="Day" required class="date-input" />
+                        <input type="date" name="Day" id=" day"  required class="date-input" />
                         ～
-                        <input type="date" name="Day" required class="date-input" />
+                        <input type="date" name="Day" id="day2" required class="date-input" />
                     </div>
                     <button class="btn btn-primary" type="button" id="daybutton">日付で検索</button>
                 </div>
@@ -46,7 +46,7 @@
             @* MyTodo? *@
             @using (Html.BeginForm("deleteTodoItems", "Todo", FormMethod.Post, new { id = "todoForm" }))
             {<div style="display:flex; flex-direction:row; justify-content:flex-end;">
-                    <div>
+                    <div style="display:none">@*ほしかったらdiv以外を消す*@
                         <button class="btn btn-primary mb-2" type="button" id="todosave">保存</button>
                     </div>
                 </div>
@@ -70,14 +70,14 @@
                         日
                         <input type="checkbox" name="myCheckbox" value="true" checked />
 
-                        <a href="@Url.Action("Day","Todo",new {day = "list" })" class="weekday-link @((ViewBag.SelectedDay == "list") ? "active" : "")">一覧</a>
+                        <a href="@Url.Action("MyTodoSearch", "MyTodo", new { area = "" })" class="weekday-link" id="all">一覧</a>
                     </label>
                 </div>
                 <label class="checkbox-label">
                     結果が確定したものの表示
-                    <input type="checkbox" name="myCheckbox" value="true" checked />
+                    <input type="checkbox" name="myCheckbox" value="true"/>
                     更新の表示
-                    <input type="checkbox" name="myCheckbox" value="true" checked />
+                    <input type="checkbox" name="myCheckbox" value="true"/>
                 </label>
                 <table class="table table-bordered" id="todoTable">
                     <thead>
@@ -109,14 +109,15 @@
                                 <td class="text-center">
                                     <button class="btn btn-outline-danger" type="button" id="deleteTodoItem">削除</button>
                                 </td>
-                                <td> <input type="checkbox" name="updatecheck" value="@item.Id" /></td>
+                                <td> <input type="checkbox" name="updatecheck" id="updatecheck" value="@item.Id" /></td>
                                 <td>@item.Day.ToShortDateString()</td>
                                 <td>@item.Time.ToShortTimeString()</td>
                                 <td>@item.Title</td>
                                 <td>@item.Description</td>
-                                @*<td><button class="maru" onclick="updateResult(@item.Id,true)">〇</button>
-                                    <button class="batu" onclick="updateResult(@item.Id,false)">×</button></td>*@
-                            </tr>
+                                <td><button class="maru" onclick="updateResult(@item.Id,true)">〇</button>
+                                                                <button class="batu" onclick="updateResult(@item.Id,false)">×</button>
+                                                            </td>
+                            </tr>                                 
                         }
                         @*<tr>
                                 <td>
@@ -142,7 +143,7 @@
                 }
 
                 var form = document.getElementById('todoForm');
-                form.action = 'http://localhost:44369/MyTodo/Search'; // 正しい URL に設定
+                form.action = '/MyTodo/Search'; // 正しい URL に設定
                 form.method = 'post'; // メソッドを POST に設定
 
                 var postTitle = document.createElement('input');
@@ -151,6 +152,52 @@
                 postTitle.value = title;
 
                 form.appendChild(postTitle);
+                form.submit();
+
+
+            });
+
+            document.getElementById("timebutton").addEventListener("click", function () {
+                const time = document.getElementById("time").value.trim();
+
+                if (time === "") {
+                    alert("時間を入力してください");
+                    return; // ここで処理を終了
+                }
+
+                var form = document.getElementById('todoForm');
+                form.action = '/MyTodo/timeSearch'; // 正しい URL に設定
+                form.method = 'post'; // メソッドを POST に設定
+
+                var postTime = document.createElement('input');
+                postTime.type = 'hidden';
+                postTime.name = `time`;
+                postTime.value = time;
+
+                form.appendChild(postTime);
+                form.submit();
+
+
+            });
+
+            document.getElementById("daybutton").addEventListener("click", function () {
+                const day = document.getElementById("day").value.trim();
+
+                if (day === "") {
+                    alert("日付を入力してください");
+                    return; // ここで処理を終了
+                }
+
+                var form = document.getElementById('todoForm');
+                form.action = '/MyTodo/daySearch'; // 正しい URL に設定
+                form.method = 'post'; // メソッドを POST に設定
+
+                var postDay = document.createElement('input');
+                postDay.type = 'hidden';
+                postDay.name = `day`;
+                postDay.value = day;
+
+                form.appendChild(postDay);
                 form.submit();
 
 
@@ -165,7 +212,7 @@
                 }
 
                 var form = document.getElementById('todoForm');
-                form.action = 'http://localhost:44369/MyTodo/Description'; // 正しい URL に設定
+                form.action = '/MyTodo/Description'; // 正しい URL に設定
                 form.method = 'post'; // メソッドを POST に設定
 
                 var postDescription = document.createElement('input');
@@ -178,6 +225,43 @@
 
 
             });
+
+            $('#all').click(function (e) {
+                // post処理防止
+                e.preventDefault();
+
+                // 追加画面へ遷移
+                window.location.href = '/MyTodo/MyTodoSearch'; // 遷移先のURLを指定
+            });
+
+            //$('#all').click(function (e) {
+            //    // post処理防止
+            //    e.preventDefault();
+
+            //    // 追加画面へ遷移
+            //    window.location.href = '/MyTodo/MyTodoSearch'; // 遷移先のURLを指定
+            //});
+            document.getElementById("descriptionbutton").addEventListener("click", function () {
+                const description = document.getElementById("todoDescription").value.trim();
+
+                if (description === "") {
+                    alert("説明を入力してください");
+                    return; // ここで処理を終了
+                }
+
+                var form = document.getElementById('todoForm');
+                form.action = '/MyTodo/Description'; // 正しい URL に設定
+                form.method = 'post'; // メソッドを POST に設定
+
+                var postDescription = document.createElement('input');
+                postDescription.type = 'hidden';
+                postDescription.name = `description`;
+                postDescription.value = description;
+
+                form.appendChild(postDescription);
+                form.submit();
+            });
+
             document.getElementById('todosave').addEventListener('click', function () {
                 var tableBody = document.querySelector('#todoTable tbody');
                 var todoItems = tableBody.querySelectorAll('tr');
@@ -187,7 +271,7 @@
                 }
 
                 var form = document.getElementById('todoForm');
-                form.action = 'http://localhost:44369/MyTodo/delTodoItems'; // 正しい URL に設定
+                form.action = '/MyTodo/delTodoItems'; // 正しい URL に設定
                 form.method = 'post'; // メソッドを POST に設定
 
 
@@ -211,11 +295,6 @@
                         postTime.name = `todoItems[${index - 1}].Time`;
                         postTime.value = todoValues[3].innerText;
 
-                        //var postTime = document.createElement('input');
-                        //postTime.type = 'hidden';
-                        //postTime.name = `todoItems[${index}].time1`;
-                        //postTime.value = todoValues[1].querySelector('input[type="time1"]').value;
-
                         var postTitle = document.createElement('input');
                         postTitle.type = 'hidden';
                         postTitle.name = `todoItems[${index - 1}].Title`;
@@ -229,7 +308,7 @@
                         var postRepeat = document.createElement('input');
                         postRepeat.type = 'hidden';
                         postRepeat.name = `todoItems[${index - 1}].Repeat`;
-                        postRepeat.value = todoValues[6].innerText;
+                        postRepeat.value = todoValues[6];
 
                         form.appendChild(postDay);
                         form.appendChild(postTime);
@@ -252,11 +331,59 @@
                 var todoTableBody = $('#todoTable tbody')[0];
 
                 var deleteRow = deleteBtn.closest('tr');
-                deleteRow.remove();
-                //TODOをすべて消した場合はデフォルト行を表示
-                if (todoTableBody.rows.length == 1) {
-                    defaultFirstRow.show();
+                //deleteRow.remove();
+
+                var form = document.getElementById('todoForm');
+                form.action = '/MyTodo/delTodoItem'; // 正しい URL に設定
+                form.method = 'post'; // メソッドを POST に設定
+
+                // 既存の隠しフィールドを削除
+                var existingHiddenFields = form.querySelectorAll('input[type="hidden"]');
+                existingHiddenFields.forEach(function (field) {
+                    field.remove();
+                });
+
+                var todoValues = deleteRow.children;
+
+                if (todoValues.length > 1) {
+                    var postDay = document.createElement('input');
+                    postDay.type = 'hidden';
+                    postDay.name = `delItem.Day`;
+                    postDay.value = todoValues[2].innerText;
+
+                    var postTime = document.createElement('input');
+                    postTime.type = 'hidden';
+                    postTime.name = `delItem.Time`;
+                    postTime.value = todoValues[3].innerText;
+
+                    var postTitle = document.createElement('input');
+                    postTitle.type = 'hidden';
+                    postTitle.name = `delItem.Title`;
+                    postTitle.value = todoValues[4].innerText;
+
+                    var postDescription = document.createElement('input');
+                    postDescription.type = 'hidden';
+                    postDescription.name = `delItem.Description`;
+                    postDescription.value = todoValues[5].innerText;
+
+                    var postRepeat = document.createElement('input');
+                    postRepeat.type = 'hidden';
+                    postRepeat.name = `delItem.Repeat`;
+                    postRepeat.value = todoValues[6].innerText;
+
+                    form.appendChild(postDay);
+                    form.appendChild(postTime);
+                    form.appendChild(postTitle);
+                    form.appendChild(postDescription);
+                    form.appendChild(postRepeat);
                 }
+
+                ////TODOをすべて消した場合はデフォルト行を表示
+                //if (todoTableBody.rows.length == 1) {
+                //    defaultFirstRow.show();
+                //}
+
+                form.submit();
             };
 
             //削除ボタンのクリックイベント設定
@@ -264,7 +391,6 @@
                 e.preventDefault();
                 deleteTasks(this);
             });
-
         });
 
     </script>
