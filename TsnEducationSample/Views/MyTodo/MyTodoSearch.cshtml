@@ -54,13 +54,6 @@
                     <h4>TODOリスト一覧</h4>
                 </div>
                 <div class="weekdays">
-                    @*<a href="@Url.Action("Day","Todo",new {day = "Monday" })" class="weekday-link @((ViewBag.SelectedDay == "Monday") ? "active" : "")">月</a>
-                        <a href="@Url.Action("Day","Todo",new {day = "Tuesday" })" class="weekday-link @((ViewBag.SelectedDay == "Tuesday") ? "active" : "")">火</a>
-                        <a href="@Url.Action("Day","Todo",new {day = "Wednesday" })" class="weekday-link @((ViewBag.SelectedDay == "Wednesday") ? "active" : "")">水</a>
-                        <a href="@Url.Action("Day","Todo",new {day = "Thursday" })" class="weekday-link @((ViewBag.SelectedDay == "Thursday") ? "active" : "")">木</a>
-                        <a href="@Url.Action("Day","Todo",new {day = "Friday" })" class="weekday-link @((ViewBag.SelectedDay == "Friday") ? "active" : "")">金</a>
-                        <a href="@Url.Action("Day","Todo",new {day = "Saturday" })" class="weekday-link @((ViewBag.SelectedDay == "Saturday") ? "active" : "")">土</a>
-                        <a href="@Url.Action("Day","Todo",new {day = "Sunday" })" class="weekday-link @((ViewBag.SelectedDay == "Sunday") ? "active" : "")">日</a>*@
                     <label class="checkbox-week">
                         月
                         <input type="checkbox" name="myCheckbox" value="true" checked />
@@ -82,8 +75,6 @@
                 </div>
                 <label class="checkbox-label">
                     結果が確定したものの表示
-                    <input type="checkbox" name="myCheckbox" value="true" checked />
-                    削除の表示
                     <input type="checkbox" name="myCheckbox" value="true" checked />
                     更新の表示
                     <input type="checkbox" name="myCheckbox" value="true" checked />
@@ -150,47 +141,43 @@
                     return; // ここで処理を終了
                 }
 
-                // fetchの呼び出し
-                fetch('@Url.Action("Search", "MyTodo")', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'RequestVerificationToken': '@Html.AntiForgeryToken()'
-                    },
-                    body: JSON.stringify({ title: title })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const tbody = document.getElementById("todoTableBody");
-                    tbody.innerHTML = ""; // テーブルをクリア
+                var form = document.getElementById('todoForm');
+                form.action = 'http://localhost:44369/MyTodo/Search'; // 正しい URL に設定
+                form.method = 'post'; // メソッドを POST に設定
 
-                    if (data.length > 0) {
-                        data.forEach(item => {
-                            const row = document.createElement("tr");
-                            row.innerHTML = `
-                                <td><button class="btn btn-outline-danger" type="button">削除</button></td>
-                                <td><input type="checkbox" name="updatecheck" value="${item.Id}" /></td>
-                                <td>${new Date(item.Day).toLocaleDateString()}</td>
-                                <td>${new Date(item.Time).toLocaleTimeString()}</td>
-                                <td>${item.Title}</td>
-                                <td>${item.Description}</td>
-                                <td>
-                                    <button class="maru" onclick="updateResult(${item.Id},true)">〇</button>
-                                    <button class="batu" onclick="updateResult(${item.Id},false)">×</button>
-                                </td>`;
-                            tbody.appendChild(row);
-                        });
-                    } else {
-                        const row = document.createElement("tr");
-                        row.innerHTML = '<td colspan="7" style="text-align: center;">該当するタスクがありません。</td>';
-                        tbody.appendChild(row);
-                    }
-                })
-                .catch(error => {
-                    console.error("検索中にエラーが発生しました: ", error);
-                });
+                var postTitle = document.createElement('input');
+                postTitle.type = 'hidden';
+                postTitle.name = `title`;
+                postTitle.value = title;
+
+                form.appendChild(postTitle);
+                form.submit();
+
+
             });
-        });
+
+            document.getElementById("descriptionbutton").addEventListener("click", function () {
+                const description = document.getElementById("todoDescription").value.trim();
+
+                if (description === "") {
+                    alert("説明を入力してください");
+                    return; // ここで処理を終了
+                }
+
+                var form = document.getElementById('todoForm');
+                form.action = 'http://localhost:44369/MyTodo/Description'; // 正しい URL に設定
+                form.method = 'post'; // メソッドを POST に設定
+
+                var postDescription = document.createElement('input');
+                postDescription.type = 'hidden';
+                postDescription.name = `description`;
+                postDescription.value = description;
+
+                form.appendChild(postDescription);
+                form.submit();
+
+
+            });
             document.getElementById('todosave').addEventListener('click', function () {
                 var tableBody = document.querySelector('#todoTable tbody');
                 var todoItems = tableBody.querySelectorAll('tr');
@@ -216,12 +203,12 @@
                     if (index > 0 && todoValues.length > 1) {
                         var postDay = document.createElement('input');
                         postDay.type = 'hidden';
-                        postDay.name = `todoItems[${index-1}].Day`;
+                        postDay.name = `todoItems[${index - 1}].Day`;
                         postDay.value = todoValues[2].innerText;
 
                         var postTime = document.createElement('input');
                         postTime.type = 'hidden';
-                        postTime.name = `todoItems[${index-1}].Time`;
+                        postTime.name = `todoItems[${index - 1}].Time`;
                         postTime.value = todoValues[3].innerText;
 
                         //var postTime = document.createElement('input');
@@ -231,17 +218,17 @@
 
                         var postTitle = document.createElement('input');
                         postTitle.type = 'hidden';
-                        postTitle.name = `todoItems[${index-1}].Title`;
+                        postTitle.name = `todoItems[${index - 1}].Title`;
                         postTitle.value = todoValues[4].innerText;
 
                         var postDescription = document.createElement('input');
                         postDescription.type = 'hidden';
-                        postDescription.name = `todoItems[${index-1}].Description`;
+                        postDescription.name = `todoItems[${index - 1}].Description`;
                         postDescription.value = todoValues[5].innerText;
 
                         var postRepeat = document.createElement('input');
                         postRepeat.type = 'hidden';
-                        postRepeat.name = `todoItems[${index-1}].Repeat`;
+                        postRepeat.name = `todoItems[${index - 1}].Repeat`;
                         postRepeat.value = todoValues[6].innerText;
 
                         form.appendChild(postDay);
@@ -257,28 +244,28 @@
 
 
 
-        // 削除ボタン押下時の処理
-        function deleteTasks(deleteBtn, todoTableBody, defaultFirstRow) {
-            //デフォルト行を取得
-            var defaultFirstRow = $('#defaultFirstRow');
-            // tbody要素を取得
-            var todoTableBody = $('#todoTable tbody')[0];
+            // 削除ボタン押下時の処理
+            function deleteTasks(deleteBtn, todoTableBody, defaultFirstRow) {
+                //デフォルト行を取得
+                var defaultFirstRow = $('#defaultFirstRow');
+                // tbody要素を取得
+                var todoTableBody = $('#todoTable tbody')[0];
 
-            var deleteRow = deleteBtn.closest('tr');
-            deleteRow.remove();
-            //TODOをすべて消した場合はデフォルト行を表示
-            if (todoTableBody.rows.length == 1) {
-                defaultFirstRow.show();
-            }
-        };
+                var deleteRow = deleteBtn.closest('tr');
+                deleteRow.remove();
+                //TODOをすべて消した場合はデフォルト行を表示
+                if (todoTableBody.rows.length == 1) {
+                    defaultFirstRow.show();
+                }
+            };
 
-        //削除ボタンのクリックイベント設定
-        $(document).on('click', '#deleteTodoItem', function (e) {
-            e.preventDefault();
-            deleteTasks(this);
+            //削除ボタンのクリックイベント設定
+            $(document).on('click', '#deleteTodoItem', function (e) {
+                e.preventDefault();
+                deleteTasks(this);
+            });
+
         });
-
-
 
     </script>
 }

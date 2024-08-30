@@ -13,7 +13,8 @@ namespace TsnEducation2024.Controllers
     {
         public ActionResult MyTodoInsert()
         {
-            string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            //string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            string filePath = AppContext.BaseDirectory + @"\App_Data\todoItem.csv";
 
             List<MyTodoItem> todoItems = new List<MyTodoItem>();
 
@@ -44,7 +45,8 @@ namespace TsnEducation2024.Controllers
         }
         public ActionResult SaveTodoItems(List<MyTodoItem> todoItems)
         {
-            string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            //string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            string filePath = AppContext.BaseDirectory + @"\App_Data\todoItem.csv";
             CreateFile(filePath);
             if (todoItems == null || !todoItems.Any())
             {

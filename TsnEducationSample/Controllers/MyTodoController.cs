@@ -14,7 +14,8 @@ namespace TsnEducation2024.Controllers
     {
         public ActionResult MyTodoIndex()
         {
-            string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            //string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            string filePath = AppContext.BaseDirectory + @"\App_Data\todoItem.csv";
 
 
             List<MyTodoItem> todoItems = new List<MyTodoItem>();
@@ -79,7 +80,8 @@ namespace TsnEducation2024.Controllers
         }
         public ActionResult SaveTodoItems(List<MyTodoItem> todoItems)
         {
-            string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            //string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            string filePath = AppContext.BaseDirectory + @"\App_Data\todoItem.csv";
             CreateFile(filePath);
             if (todoItems == null || !todoItems.Any())
             {
@@ -106,7 +108,8 @@ namespace TsnEducation2024.Controllers
 
         public ActionResult delTodoItems(List<MyTodoItem> todoItems)
         {
-            string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            //string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            string filePath = AppContext.BaseDirectory + @"\App_Data\todoItem.csv";
             CreateFile(filePath);
             if (todoItems == null || !todoItems.Any())
             {
@@ -143,14 +146,16 @@ namespace TsnEducation2024.Controllers
                     return View("MyTodoInsert", todoItems);
                 }
 
-                string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+                //string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+                string filePath = AppContext.BaseDirectory + @"\App_Data\todoItem.csv";
+                CreateFile(filePath);
 
                 using (var writer = new StreamWriter(filePath, true, Encoding.GetEncoding("shift-jis")))
                 {
                     foreach (var item in todoItems)
                     {
                         // 各アイテムをCSV形式で書き込む
-                        writer.WriteLine($"{item.Day:yyyy-MM-dd},{item.Time:HH:mm},{item.Title},{item.Description},{item.Repeat}");
+                        writer.WriteLine($"{item.Day:yyyy/MM/dd},{item.Time:HH:mm},{item.Title},{item.Description},{item.Repeat}");
                     }
                 }
 
@@ -164,7 +169,8 @@ namespace TsnEducation2024.Controllers
 
         public ActionResult Search(string title)
         {
-            string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            //string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            string filePath = AppContext.BaseDirectory + @"\App_Data\todoItem.csv";
             var todoItems = ReadTodoItemsFromFile(filePath);
 
             // タイトルが部分一致するタスクのみをフィルター
@@ -173,35 +179,62 @@ namespace TsnEducation2024.Controllers
                 todoItems = todoItems.Where(t => t.Title.Contains(title)).ToList();
             }
 
-            // 一致するタスクをJSON形式で返す
-            return Json(todoItems);
+            var serachItems = new List<SearchItem>();
+
+            foreach (var item in todoItems)
+            {
+                serachItems.Add(new SearchItem() { Day = item.Day , Time = item.Time ,Title = item.Title, Description = item.Description });
+            }
+
+            return View("MyTodoSearch", serachItems);
         }
 
         private List<MyTodoItem> ReadTodoItemsFromFile(string filePath)
         {
             var todoItems = new List<MyTodoItem>();
-            var lines = System.IO.File.ReadAllLines(filePath);
+            var lines = System.IO.File.ReadAllLines(filePath, Encoding.GetEncoding("shift-jis"));
 
             foreach (var line in lines)
             {
                 var values = line.Split(',');
                 todoItems.Add(new MyTodoItem
                 {
-                    Id = int.Parse(values[0]),
-                    Day = DateTime.Parse(values[2]),
-                    Time = DateTime.Parse(values[3]),
-                    Title = values[4],
-                    Description = values[5],
-                    Result = values[6]
+                    Day = DateTime.Parse(values[0]),
+                    Time = DateTime.Parse(values[1]),
+                    Title = values[2],
+                    Description = values[3],
+                    Result = values[4]
                 });
             }
 
             return todoItems;
         }
+        public ActionResult Description(string description)
+        {
+            //string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            string filePath = AppContext.BaseDirectory + @"\App_Data\todoItem.csv";
+            var todoItems = ReadTodoItemsFromFile(filePath);
+
+            // タイトルが部分一致するタスクのみをフィルター
+            if (!string.IsNullOrEmpty(description))
+            {
+                todoItems = todoItems.Where(d => d.Description.Contains(description)).ToList();
+            }
+
+            var serachItems = new List<SearchItem>();
+
+            foreach (var item in todoItems)
+            {
+                serachItems.Add(new SearchItem() { Day = item.Day, Time = item.Time, Title = item.Title, Description = item.Description });
+            }
+
+            return View("MyTodoSearch", serachItems);
+        }
 
         public ActionResult DeleteTodoItems(List<MyTodoItem> deleteItems)
         {
-            var filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            //var filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
+            string filePath = AppContext.BaseDirectory + @"\App_Data\todoItem.csv";
             var todos = ReadTodoItemsFromCsv(filePath);
 
             // 削除するアイテムを特定
