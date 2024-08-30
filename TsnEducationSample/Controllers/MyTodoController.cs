@@ -162,102 +162,22 @@ namespace TsnEducation2024.Controllers
             return View("MyTodoInsert", todoItems);
         }
 
-        [HttpPost]
-        public ActionResult Search(string title)
+        public ActionResult Searach(string title)
         {
-            // CSVファイルからデータを読み込む
-            var filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
-            var todos = ReadTodoItemsFromCsv(filePath);
+            string filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
 
-            // タイトルでフィルタリング（大文字小文字を区別しない）
-            var filteredTodos = todos
-                .Where(item => item.Title.IndexOf(title, StringComparison.OrdinalIgnoreCase) >= 0)
-                .ToList();
+            var todoItems = ReadTodoItemsFromFile(filePath);
 
-            // フィルタリングされたリストをビューに渡す
-            return View("MyTodoSearch", filteredTodos);
-        }
-
-        public ActionResult DeleteTodoItems(List<MyTodoItem> deleteItems)
-        {
-            var filePath = @"C:\temp\TsnEducation2024\todoItem.csv";
-            var todos = ReadTodoItemsFromCsv(filePath);
-
-            // 削除するアイテムを特定
-            var remainingTodos = todos
-                .Where(todo => !deleteItems.Any(d => d.Day == todo.Day && d.Time == todo.Time && d.Title == todo.Title && d.Description == todo.Description && d.Result == todo.Result))
-                .ToList();
-
-            SaveTodoItemsToCsv(filePath, remainingTodos);
-
-            TempData["SuccessMessage"] = "選択した項目を削除しました。";
-            return RedirectToAction("MyTodoSearch");
-        }
-
-        private void SaveTodoItemsToCsv(string filePath, List<MyTodoItem> todos)
-        {
-            var csvLines = new List<string>();
-
-            // CSVヘッダー
-            csvLines.Add("Day,Time,Title,Description,Result");
-
-            // 各MyTodoItemオブジェクトをCSV形式に変換してリストに追加
-            foreach (var todo in todos)
+            if (!string.IsNullOrEmpty(title))
             {
-                var line = $"{todo.Day:yyyy-MM-dd},{todo.Time:HH:mm},{todo.Title},{todo.Description},{todo.Result}";
-                csvLines.Add(line);
+                // あいまい検索（部分一致）
+                todoItems = todoItems.Where(t => t.Title.Contains(title)).ToList();
             }
 
-            // ファイルに書き込む
-            System.IO.File.WriteAllLines(filePath, csvLines);
+            // 検索結果をビューに渡す
+            return View("Search", todoItems);
         }
-        private List<MyTodoItem> ReadTodoItemsFromCsv(string filePath)
-        {
-            var todos = new List<MyTodoItem>();
-
-            try
-            {
-                // CSVファイルの全行を読み込む
-                var lines = System.IO.File.ReadAllLines(filePath);
-
-                // 1行目はヘッダー行であると仮定して、スキップする
-                foreach (var line in lines.Skip(1))
-                {
-                    // カンマで区切られた値を取得
-                    var values = line.Split(',');
-
-                    // 必要なフィールド数があるか確認
-                    if (values.Length >= 5)
-                    {
-                        // MyTodoItemオブジェクトを作成
-                        var todo = new MyTodoItem
-                        {
-                            Day = DateTime.Parse(values[0]),
-                            Time = DateTime.Parse(values[1]),
-                            Title = values[2],
-                            Description = values[3],
-                            Result = values[4]
-                        };
-
-                        // リストに追加
-                        todos.Add(todo);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // エラーハンドリング: ログを記録するか、適切な処理を行う
-                Console.WriteLine("CSV読み込み中にエラーが発生しました: " + ex.Message);
-            }
-
-            return todos;
-        }
-
-        //public ActionResult SearchTodoItems(List<SerachItem> todoItems)
-        //{
-
-
-        //}
+    }
 
 
         public  ActionResult list()

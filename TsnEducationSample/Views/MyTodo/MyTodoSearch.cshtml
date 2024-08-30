@@ -1,6 +1,6 @@
 @model List<TsnEducation2024.Models.SearchItem>
 @{
-    ViewBag.Title = "TodoƒŠƒXƒg";
+    ViewBag.Title = "Todoãƒªã‚¹ãƒˆ";
 }
 <main aria-labellebdy="title">
     <div class="row">
@@ -15,29 +15,29 @@
         }
         <div class="d-flex flex-row justify-content-between mb-3">
             <h3>MyTodo</h3>
-            @Html.ActionLink("MyTodo——‰æ–Ê‚Ö–ß‚é", "MyTodoIndex", "MyTodo", new { area = "" }, new { @class = "MyTodo-link" })
+            @Html.ActionLink("MyTodoè¦§ç”»é¢ã¸æˆ»ã‚‹", "MyTodoIndex", "MyTodo", new { area = "" }, new { @class = "MyTodo-link" })
         </div>
         <form method="post" action="@Url.Action("Search","Todo")">
             <div class="form-container">
                 <div class="form-group">
                     <input type="time" name="Time" required class="large-time-input" />
-                    <button class="btn btn-primary" type="button" id="timebutton">ŠÔ‚ÅŒŸõ</button>
+                    <button class="btn btn-primary" type="button" id="timebutton">æ™‚é–“ã§æ¤œç´¢</button>
                 </div>
                 <div class="form-group">
                     <div class="date-container">
                         <input type="date" name="Day" required class="date-input" />
-                        `
+                        ï½
                         <input type="date" name="Day" required class="date-input" />
                     </div>
-                    <button class="btn btn-primary" type="button" id="daybutton">“ú•t‚ÅŒŸõ</button>
+                    <button class="btn btn-primary" type="button" id="daybutton">æ—¥ä»˜ã§æ¤œç´¢</button>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" id="todoTitle" name="title" placeholder="ƒ^ƒCƒgƒ‹‚ğ“ü—Í" />
-                    <button class="btn btn-primary" type="button" id="titlebutton">ƒ^ƒCƒgƒ‹‚ÅŒŸõ</button>
+                    <input class="form-control" type="text" id="todoTitle" name="title" placeholder="ã‚¿ã‚¤ãƒˆãƒ«ã‚’å…¥åŠ›" />
+                    <button class="btn btn-primary" type="button" id="titlebutton">ã‚¿ã‚¤ãƒˆãƒ«ã§æ¤œç´¢</button>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="text" id="todoDescription" placeholder="à–¾‚ğ“ü—Í" />
-                    <button class="btn btn-primary" type="button" id="descriptionbutton">à–¾‚ÅŒŸõ</button>
+                    <input class="form-control" type="text" id="todoDescription" placeholder="èª¬æ˜ã‚’å…¥åŠ›" />
+                    <button class="btn btn-primary" type="button" id="descriptionbutton">èª¬æ˜ã§æ¤œç´¢</button>
                 </div>
             </div>
         </form>
@@ -47,57 +47,57 @@
             @using (Html.BeginForm("deleteTodoItems", "Todo", FormMethod.Post ,new { id = "todoForm" }))
             {<div style="display:flex; flex-direction:row; justify-content:flex-end;">
                     <div>
-                        <button class="btn btn-primary mb-2" type="button" id="todosave">•Û‘¶</button>
+                        <button class="btn btn-primary mb-2" type="button" id="todosave">ä¿å­˜</button>
                     </div>
                 </div>
                 <div style="display:flex; flex-direction:row; justify-content:space-between;">
-                    <h4>TODOƒŠƒXƒgˆê——</h4>
+                    <h4>TODOãƒªã‚¹ãƒˆä¸€è¦§</h4>
                 </div>
                 <div class="weekdays">
-                    @*<a href="@Url.Action("Day","Todo",new {day = "Monday" })" class="weekday-link @((ViewBag.SelectedDay == "Monday") ? "active" : "")">Œ</a>
-                        <a href="@Url.Action("Day","Todo",new {day = "Tuesday" })" class="weekday-link @((ViewBag.SelectedDay == "Tuesday") ? "active" : "")">‰Î</a>
-                        <a href="@Url.Action("Day","Todo",new {day = "Wednesday" })" class="weekday-link @((ViewBag.SelectedDay == "Wednesday") ? "active" : "")">…</a>
-                        <a href="@Url.Action("Day","Todo",new {day = "Thursday" })" class="weekday-link @((ViewBag.SelectedDay == "Thursday") ? "active" : "")">–Ø</a>
-                        <a href="@Url.Action("Day","Todo",new {day = "Friday" })" class="weekday-link @((ViewBag.SelectedDay == "Friday") ? "active" : "")">‹à</a>
-                        <a href="@Url.Action("Day","Todo",new {day = "Saturday" })" class="weekday-link @((ViewBag.SelectedDay == "Saturday") ? "active" : "")">“y</a>
-                        <a href="@Url.Action("Day","Todo",new {day = "Sunday" })" class="weekday-link @((ViewBag.SelectedDay == "Sunday") ? "active" : "")">“ú</a>*@
+                    @*<a href="@Url.Action("Day","Todo",new {day = "Monday" })" class="weekday-link @((ViewBag.SelectedDay == "Monday") ? "active" : "")">æœˆ</a>
+                        <a href="@Url.Action("Day","Todo",new {day = "Tuesday" })" class="weekday-link @((ViewBag.SelectedDay == "Tuesday") ? "active" : "")">ç«</a>
+                        <a href="@Url.Action("Day","Todo",new {day = "Wednesday" })" class="weekday-link @((ViewBag.SelectedDay == "Wednesday") ? "active" : "")">æ°´</a>
+                        <a href="@Url.Action("Day","Todo",new {day = "Thursday" })" class="weekday-link @((ViewBag.SelectedDay == "Thursday") ? "active" : "")">æœ¨</a>
+                        <a href="@Url.Action("Day","Todo",new {day = "Friday" })" class="weekday-link @((ViewBag.SelectedDay == "Friday") ? "active" : "")">é‡‘</a>
+                        <a href="@Url.Action("Day","Todo",new {day = "Saturday" })" class="weekday-link @((ViewBag.SelectedDay == "Saturday") ? "active" : "")">åœŸ</a>
+                        <a href="@Url.Action("Day","Todo",new {day = "Sunday" })" class="weekday-link @((ViewBag.SelectedDay == "Sunday") ? "active" : "")">æ—¥</a>*@
                     <label class="checkbox-week">
-                        Œ
+                        æœˆ
                         <input type="checkbox" name="myCheckbox" value="true" checked />
-                        ‰Î
+                        ç«
                         <input type="checkbox" name="myCheckbox" value="true" checked />
-                        …
+                        æ°´
                         <input type="checkbox" name="myCheckbox" value="true" checked />
-                        –Ø
+                        æœ¨
                         <input type="checkbox" name="myCheckbox" value="true" checked />
-                        ‹à
+                        é‡‘
                         <input type="checkbox" name="myCheckbox" value="true" checked />
-                        “y
+                        åœŸ
                         <input type="checkbox" name="myCheckbox" value="true" checked />
-                        “ú
+                        æ—¥
                         <input type="checkbox" name="myCheckbox" value="true" checked />
 
-                        <a href="@Url.Action("Day","Todo",new {day = "list" })" class="weekday-link @((ViewBag.SelectedDay == "list") ? "active" : "")">ˆê——</a>
+                        <a href="@Url.Action("Day","Todo",new {day = "list" })" class="weekday-link @((ViewBag.SelectedDay == "list") ? "active" : "")">ä¸€è¦§</a>
                     </label>
                 </div>
                 <label class="checkbox-label">
-                    Œ‹‰Ê‚ªŠm’è‚µ‚½‚à‚Ì‚Ì•\¦
+                    çµæœãŒç¢ºå®šã—ãŸã‚‚ã®ã®è¡¨ç¤º
                     <input type="checkbox" name="myCheckbox" value="true" checked />
-                    íœ‚Ì•\¦
+                    å‰Šé™¤ã®è¡¨ç¤º
                     <input type="checkbox" name="myCheckbox" value="true" checked />
-                    XV‚Ì•\¦
+                    æ›´æ–°ã®è¡¨ç¤º
                     <input type="checkbox" name="myCheckbox" value="true" checked />
                 </label>
                 <table class="table table-bordered" id="todoTable">
                     <thead>
                         <tr>
-                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">íœ</font></font></th>
-                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">XV</font></font></th>
-                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">“ú•t</font></font></th>
-                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ŠúŒÀ</font></font></th>
-                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ƒ^ƒCƒgƒ‹</font></font></th>
-                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">à–¾</font></font></th>
-                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Œ‹‰Ê</font></font></th>
+                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">å‰Šé™¤</font></font></th>
+                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">æ›´æ–°</font></font></th>
+                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">æ—¥ä»˜</font></font></th>
+                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">æœŸé™</font></font></th>
+                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ã‚¿ã‚¤ãƒˆãƒ«</font></font></th>
+                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">èª¬æ˜</font></font></th>
+                            <th scope="col"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">çµæœ</font></font></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -107,7 +107,7 @@
                                 {
                                     style = "display:none;";
                                 }
-                                <td colspan="7" id="defaultFirstRow" style="text-align: center; @style">•\¦‚·‚é€–Ú‚ª‚ ‚è‚Ü‚¹‚ñB</td>
+                                <td colspan="7" id="defaultFirstRow" style="text-align: center; @style">è¡¨ç¤ºã™ã‚‹é …ç›®ãŒã‚ã‚Šã¾ã›ã‚“ã€‚</td>
                             }
                         </tr>
 
@@ -116,15 +116,15 @@
                             <tr>
                                 @*<td> <input type="checkbox" name="deletecheck" value="@item.Id" /></td>*@
                                 <td class="text-center">
-                                    <button class="btn btn-outline-danger" type="button" id="deleteTodoItem">íœ</button>
+                                    <button class="btn btn-outline-danger" type="button" id="deleteTodoItem">å‰Šé™¤</button>
                                 </td>
                                 <td> <input type="checkbox" name="updatecheck" value="@item.Id" /></td>
                                 <td>@item.Day.ToShortDateString()</td>
                                 <td>@item.Time.ToShortTimeString()</td>
                                 <td>@item.Title</td>
                                 <td>@item.Description</td>
-                                @*<td><button class="maru" onclick="updateResult(@item.Id,true)">Z</button>
-                                <button class="batu" onclick="updateResult(@item.Id,false)">~</button></td>*@     
+                                @*<td><button class="maru" onclick="updateResult(@item.Id,true)">ã€‡</button>
+                                <button class="batu" onclick="updateResult(@item.Id,false)">Ã—</button></td>*@     
                             </tr>
                         }
                         @*<tr>
@@ -142,28 +142,28 @@
 {
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
-            // ƒ^ƒCƒgƒ‹‚ÅŒŸõƒ{ƒ^ƒ“‚ÌƒNƒŠƒbƒNƒCƒxƒ“ƒgƒŠƒXƒi[‚ğİ’è
+            // ã‚¿ã‚¤ãƒˆãƒ«ã§æ¤œç´¢ãƒœã‚¿ãƒ³ã®ã‚¯ãƒªãƒƒã‚¯ã‚¤ãƒ™ãƒ³ãƒˆãƒªã‚¹ãƒŠãƒ¼ã‚’è¨­å®š
             document.getElementById('titlebutton').addEventListener('click', function () {
-                // ŒŸõ‘ÎÛ‚Ìƒ^ƒCƒgƒ‹‚ğæ“¾
+                // æ¤œç´¢å¯¾è±¡ã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’å–å¾—
                 var searchTitle = document.getElementById('todoTitle').value.toLowerCase();
 
                 var form = document.getElementById('todoForm');
-                form.action = 'http://localhost:44369/MyTodo/Search'; // ³‚µ‚¢ URL ‚Éİ’è
-                form.method = 'post'; // ƒƒ\ƒbƒh‚ğ POST ‚Éİ’è
+                form.action = 'http://localhost:44369/MyTodo/Search'; // æ­£ã—ã„ URL ã«è¨­å®š
+                form.method = 'post'; // ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ POST ã«è¨­å®š
 
-                // ƒe[ƒuƒ‹‚Ìs‚ğæ“¾
+                // ãƒ†ãƒ¼ãƒ–ãƒ«ã®è¡Œã‚’å–å¾—
                 var rows = document.querySelectorAll('#todoTable tbody tr');
 
-                // s‚ğƒ‹[ƒv‚µ‚ÄƒtƒBƒ‹ƒ^ƒŠƒ“ƒO
+                // è¡Œã‚’ãƒ«ãƒ¼ãƒ—ã—ã¦ãƒ•ã‚£ãƒ«ã‚¿ãƒªãƒ³ã‚°
                 rows.forEach(function (row) {
-                    // Šes‚Ìƒ^ƒCƒgƒ‹‚ğæ“¾
-                    var title = row.cells[2].textContent.toLowerCase(); // 4—ñ–Ú‚ªƒ^ƒCƒgƒ‹
+                    // å„è¡Œã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’å–å¾—
+                    var title = row.cells[2].textContent.toLowerCase(); // 4åˆ—ç›®ãŒã‚¿ã‚¤ãƒˆãƒ«
 
-                    // ƒ^ƒCƒgƒ‹‚ªŒŸõ•¶š—ñ‚ÉŠÜ‚Ü‚ê‚é‚©ƒ`ƒFƒbƒN
+                    // ã‚¿ã‚¤ãƒˆãƒ«ãŒæ¤œç´¢æ–‡å­—åˆ—ã«å«ã¾ã‚Œã‚‹ã‹ãƒã‚§ãƒƒã‚¯
                     if (title.includes(searchTitle)) {
-                        row.style.display = ''; // ˆê’v‚·‚és‚Í•\¦
+                        row.style.display = ''; // ä¸€è‡´ã™ã‚‹è¡Œã¯è¡¨ç¤º
                     } else {
-                        row.style.display = 'none'; // ˆê’v‚µ‚È‚¢s‚Í”ñ•\¦
+                        row.style.display = 'none'; // ä¸€è‡´ã—ãªã„è¡Œã¯éè¡¨ç¤º
                     }
                 });
             });
@@ -177,11 +177,11 @@
                 }
 
                 var form = document.getElementById('todoForm');
-                form.action = 'http://localhost:44369/MyTodo/delTodoItems'; // ³‚µ‚¢ URL ‚Éİ’è
-                form.method = 'post'; // ƒƒ\ƒbƒh‚ğ POST ‚Éİ’è
+                form.action = 'http://localhost:44369/MyTodo/delTodoItems'; // æ­£ã—ã„ URL ã«è¨­å®š
+                form.method = 'post'; // ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ POST ã«è¨­å®š
 
 
-                // Šù‘¶‚Ì‰B‚µƒtƒB[ƒ‹ƒh‚ğíœ
+                // æ—¢å­˜ã®éš ã—ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’å‰Šé™¤
                 var existingHiddenFields = form.querySelectorAll('input[type="hidden"]');
                 existingHiddenFields.forEach(function (field) {
                     field.remove();
@@ -235,22 +235,22 @@
 
         });
 
-        // íœƒ{ƒ^ƒ“‰Ÿ‰º‚Ìˆ—
+        // å‰Šé™¤ãƒœã‚¿ãƒ³æŠ¼ä¸‹æ™‚ã®å‡¦ç†
         function deleteTasks(deleteBtn, todoTableBody, defaultFirstRow) {
-            //ƒfƒtƒHƒ‹ƒgs‚ğæ“¾
+            //ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè¡Œã‚’å–å¾—
             var defaultFirstRow = $('#defaultFirstRow');
-            // tbody—v‘f‚ğæ“¾
+            // tbodyè¦ç´ ã‚’å–å¾—
             var todoTableBody = $('#todoTable tbody')[0];
 
             var deleteRow = deleteBtn.closest('tr');
             deleteRow.remove();
-            //TODO‚ğ‚·‚×‚ÄÁ‚µ‚½ê‡‚ÍƒfƒtƒHƒ‹ƒgs‚ğ•\¦
+            //TODOã‚’ã™ã¹ã¦æ¶ˆã—ãŸå ´åˆã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆè¡Œã‚’è¡¨ç¤º
             if (todoTableBody.rows.length == 1) {
                 defaultFirstRow.show();
             }
         };
 
-        //íœƒ{ƒ^ƒ“‚ÌƒNƒŠƒbƒNƒCƒxƒ“ƒgİ’è
+        //å‰Šé™¤ãƒœã‚¿ãƒ³ã®ã‚¯ãƒªãƒƒã‚¯ã‚¤ãƒ™ãƒ³ãƒˆè¨­å®š
         $(document).on('click', '#deleteTodoItem', function (e) {
             e.preventDefault();
             deleteTasks(this);
@@ -291,48 +291,48 @@
 
         .left-margin-button {
             display: flex;
-            justify-content: flex-start; /* ‚±‚±‚Å¶‚ÉŠñ‚¹‚½‚¢‹——£‚ğw’è */
+            justify-content: flex-start; /* ã“ã“ã§å·¦ã«å¯„ã›ãŸã„è·é›¢ã‚’æŒ‡å®š */
         }
 
         .weekdays {
             display: flex;
-            flex-wrap: wrap; /* •¡”s‚É‚·‚éê‡ */
-            justify-content: center; /* …•½’†‰›‘µ‚¦ */
-            margin-bottom: 20px; /* ‰º‚É­‚µƒXƒy[ƒX‚ğ’Ç‰Á */
+            flex-wrap: wrap; /* è¤‡æ•°è¡Œã«ã™ã‚‹å ´åˆ */
+            justify-content: center; /* æ°´å¹³ä¸­å¤®æƒãˆ */
+            margin-bottom: 20px; /* ä¸‹ã«å°‘ã—ã‚¹ãƒšãƒ¼ã‚¹ã‚’è¿½åŠ  */
             position: relative;
         }
 
             .weekdays a {
-                margin: 0 8px; /* ¶‰E‚É8px‚ÌƒXƒy[ƒX‚ğ’Ç‰Á */
-                font-weight: bold; /* ƒeƒLƒXƒg‚ğ‘¾š‚É */
+                margin: 0 8px; /* å·¦å³ã«8pxã®ã‚¹ãƒšãƒ¼ã‚¹ã‚’è¿½åŠ  */
+                font-weight: bold; /* ãƒ†ã‚­ã‚¹ãƒˆã‚’å¤ªå­—ã« */
             }
 
         .weekday-link {
             text-decoration: none;
-            color: blue; /* ’Êí‚ÌƒŠƒ“ƒN‚ÌF */
+            color: blue; /* é€šå¸¸ã®ãƒªãƒ³ã‚¯ã®è‰² */
             padding: 5px 10px;
             margin: 0 5px;
             border-radius: 3px;
         }
 
             .weekday-link.active {
-                color: purple; /* ‘I‘ğ‚³‚ê‚½ƒŠƒ“ƒN‚ÌF */
+                color: purple; /* é¸æŠã•ã‚ŒãŸãƒªãƒ³ã‚¯ã®è‰² */
                 font-weight: bold;
             }
 
         .checkbox-label {
             display: block;
-            text-align: center; /* ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ğ’†‰›‚É”z’u */
-            margin-top: 0px; /* ã‚ÉƒXƒy[ƒX‚ğ’Ç‰Á */
+            text-align: center; /* ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã‚’ä¸­å¤®ã«é…ç½® */
+            margin-top: 0px; /* ä¸Šã«ã‚¹ãƒšãƒ¼ã‚¹ã‚’è¿½åŠ  */
         }
 
         .checkbox-week {
             display: block;
-            text-align: center; /* ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ğ’†‰›‚É”z’u */
+            text-align: center; /* ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã‚’ä¸­å¤®ã«é…ç½® */
         }
 
         .checkbox-label input {
-            margin-left: 5px; /* ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚Æƒ‰ƒxƒ‹‚ÌŠÔ‚ÉƒXƒy[ƒX‚ğ’Ç‰Á */
+            margin-left: 5px; /* ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã¨ãƒ©ãƒ™ãƒ«ã®é–“ã«ã‚¹ãƒšãƒ¼ã‚¹ã‚’è¿½åŠ  */
         }
 
         /*        .alert-fade {

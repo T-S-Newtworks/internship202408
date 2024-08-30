@@ -1,6 +1,6 @@
-@model List<TsnEducation2024.Models.MyTodoItem>
+@model List<TsnEducation2024.Models.MyTodoInsertItem>
 @{
-    ViewBag.Title = "TodoƒŠƒXƒg";
+    ViewBag.Title = "Todoãƒªã‚¹ãƒˆ";
 }
 <main aria-labelledby="title">
     <div class="row">
@@ -15,60 +15,40 @@
         }
         <div class="d-flex flex-row justify-content-between mb-3">
             <h3>MyTodo</h3>
-            @Html.ActionLink("ƒTƒ“ƒvƒ‹ˆê——‰æ–Ê‚Ö–ß‚é", "Sample", "Home", new { area = "" }, new { @class = "sample-link" })
+            @Html.ActionLink("MyTodoç”»é¢ã¸æˆ»ã‚‹", "MyTodoIndex", "MyTodo", new { area = "" }, new { @class = "MyTodo-link" })
         </div>
-        <form>
-            <div class="d-flex flex-row justify-content-end gap-2">
-                <button class="btn btn-primary" type="button" id="insertbutton">TODO’Ç‰Á</button>
-                <button class="btn btn-primary" type="button" id="todosearch">ŒŸõ‰æ–Ê‚Ö</button>
-                @*<button class="btn btn-primary" type="button" id="todosave">•Û‘¶</button>*@
-            </div>
-        </form>
         <div id="todoListTable">
-            @using (Html.BeginForm("SaveTodoItems", "Todo", FormMethod.Post))
+            @using (Html.BeginForm("SaveTodoItems", "Todo", FormMethod.Post, new { id = "todoForm" }))
             {
-                <!-- ã‚ÉƒXƒy[ƒX‚ğ‚½‚¹‚é‚½‚ß‚Éƒ}[ƒWƒ“‚ğ’²® -->
-                <div class="d-flex flex-column align-items-end mb-2">
-                    <button class="btn btn-primary" type="button" id="resultTodo">Œ‹‰Ê‰æ–Ê‚Ö</button>
+                <div style="display:flex; flex-direction:row; justify-content:flex-end;">
+                    <div>
+                        <button class="btn btn-primary mb-2" type="button" id="saveTodo">ä¿å­˜</button>
+                    </div>
                 </div>
                 <div style="display:flex; flex-direction:row; justify-content:space-between;">
-                    <h4>TODOƒŠƒXƒgˆê——</h4>
+                    <h4>TODOãƒªã‚¹ãƒˆä¸€è¦§</h4>
                 </div>
-                <div class="weekdays">
-                    <a href="@Url.Action("Day","Todo",new {day = "Monday" })" class="weekday-link @((ViewBag.SelectedDay == "Monday") ? "active" : "")">Œ</a>
-                    <a href="@Url.Action("Day","Todo",new {day = "Tuesday" })" class="weekday-link @((ViewBag.SelectedDay == "Tuesday") ? "active" : "")">‰Î</a>
-                    <a href="@Url.Action("Day","Todo",new {day = "Wednesday" })" class="weekday-link @((ViewBag.SelectedDay == "Wednesday") ? "active" : "")">…</a>
-                    <a href="@Url.Action("Day","Todo",new {day = "Thursday" })" class="weekday-link @((ViewBag.SelectedDay == "Thursday") ? "active" : "")">–Ø</a>
-                    <a href="@Url.Action("Day","Todo",new {day = "Friday" })" class="weekday-link @((ViewBag.SelectedDay == "Friday") ? "active" : "")">‹à</a>
-                    <a href="@Url.Action("Day","Todo",new {day = "Saturday" })" class="weekday-link @((ViewBag.SelectedDay == "Saturday") ? "active" : "")">“y</a>
-                    <a href="@Url.Action("Day","Todo",new {day = "Sunday" })" class="weekday-link @((ViewBag.SelectedDay == "Sunday") ? "active" : "")">“ú</a>
-                    <a href="@Url.Action("Day","Todo",new {day = "list" })" class="weekday-link @((ViewBag.SelectedDay == "list") ? "active" : "")">ˆê——</a>
-                </div>
-                <label class="checkbox-label">
-                    Œ‹‰Ê‚ªŠm’è‚µ‚½‚à‚Ì‚Ì•\¦
-                    <input type="checkbox" name="myCheckbox" value="true" checked />
-                </label>
+                @*<div class="weekdays">
+                    <a href="@Url.Action("Day", "Todo", new { day = "Monday" })">æœˆ</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Tuesday" })">ç«</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Wednesday" })">æ°´</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Thursday" })">æœ¨</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Friday" })">é‡‘</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Saturday" })">åœŸ</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "Sunday" })">æ—¥</a>
+                    <a href="@Url.Action("Day", "Todo", new { day = "list" })">ä¸€è¦§</a>
+                </div>*@
                 <table class="table table-bordered" id="todoTable">
                     <thead>
                         <tr>
-                            <th scope="col">“ú•t</th>
-                            <th scope="col">ŠúŒÀ</th>
-                            <th scope="col">ƒ^ƒCƒgƒ‹</th>
-                            <th scope="col">à–¾</th>
-                            <th scope="col">Œ‹‰Ê</th>
+                            <th scope="col" class="day">æ—¥ä»˜</th>
+                            <th scope="col" class="time">æœŸé™</th>
+                            <th scope="col" class="title">ã‚¿ã‚¤ãƒˆãƒ«</th>
+                            <th scope="col" class="description">èª¬æ˜</th>
+                            <th scope="col" class="repeat">ç¹°ã‚Šè¿”ã—</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            @{string style = string.Empty;
-                                if (Model.Any())
-                                {
-                                    style = "display:none;";
-                                }
-                                <td colspan="5" id="defaultFirstRow" style="text-align: center; @style">•\¦‚·‚é€–Ú‚ª‚ ‚è‚Ü‚¹‚ñB</td>
-                            }
-                        </tr>
-
                         @foreach (var item in Model)
                         {
                             <tr>
@@ -76,162 +56,171 @@
                                 <td>@item.Time.ToString("HH:mm")</td>
                                 <td>@item.Title</td>
                                 <td>@item.Description</td>
-                                <td><button class="maru" onclick="updateResult(@item.Id,true)">Z</button>
-                                <button class="batu" onclick="updateResult(@item.Id,false)">~</button></td>
+                                <td>@item.Repeat</td>
                             </tr>
                         }
+                        <tr>
+                            <td>
+                                <input type="date" name="Day" required />
+                            </td>
+                            <td>
+                                <input type="time" name="Time" required />
+                                <select name="minutes" class="time-select">
+                                    <option value="00">00</option>
+                                    <option value="05">05</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+                                    <option value="30">30</option>
+                                    <option value="35">35</option>
+                                    <option value="40">40</option>
+                                    <option value="45">45</option>
+                                    <option value="50">50</option>
+                                    <option value="55">55</option>
+                                </select>
+                                <span class="notification-text">åˆ†å‰ã«é€šçŸ¥</span>
+                            </td>
+                            <td>
+                                <input type="text" name="Title" placeholder="ã‚¿ã‚¤ãƒˆãƒ«ã‚’å…¥åŠ›" required />
+                            </td>
+                            <td>
+                                <textarea name="Description" placeholder="èª¬æ˜ã‚’å…¥åŠ›"></textarea>
+                            </td>
+                            <td>
+                                <input type="text" name="Repeat" placeholder="ç¹°ã‚Šè¿”ã—ã‚’å…¥åŠ›" />
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
+                <button type="button" class="plus-button" onclick="addRow()">æ–°ã—ã„ã‚¿ã‚¹ã‚¯ã®è¿½åŠ </button>
             }
         </div>
     </div>
 </main>
-
 @section scripts
 {
     <script type="text/javascript">
-        $(document).ready(function () {
-            // ’Ç‰Áƒ{ƒ^ƒ“‚ÌƒNƒŠƒbƒNƒCƒxƒ“ƒgİ’è
-            $('#insertbutton').click(function (e) {
-                // postˆ—–h~
-                e.preventDefault();
+        function addRow() {
+            // ãƒ†ãƒ¼ãƒ–ãƒ«ãƒœãƒ‡ã‚£ã‚’å–å¾—
+            var tableBody = document.getElementById('todoTable').getElementsByTagName('tbody')[0];
 
-                // ’Ç‰Á‰æ–Ê‚Ö‘JˆÚ
-                window.location.href = 'http://localhost:44369/MyTodo/MyTodoInsert'; // ‘JˆÚæ‚ÌURL‚ğw’è
+            // æ–°ã—ã„è¡Œã‚’ä½œæˆ
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
+        <td><input type="date" id="todoDate" name="Day" required /></td>
+        <td>
+            <input type="time" id="todoTime" name="Time" required />
+            <select id="minutes" name="minutes" class="time-select">
+                <option value="00">00</option>
+                <option value="05">05</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+                <option value="35">35</option>
+                <option value="40">40</option>
+                <option value="45">45</option>
+                <option value="50">50</option>
+                <option value="55">55</option>
+            </select>
+            <span class="notification-text">åˆ†å‰ã«é€šçŸ¥</span>
+        </td>
+        <td><input type="text" id="todoTitle" name="Title" placeholder="ã‚¿ã‚¤ãƒˆãƒ«ã‚’å…¥åŠ›" required /></td>
+        <td><textarea id="todoDescription" name="Description" placeholder="èª¬æ˜ã‚’å…¥åŠ›"></textarea></td>
+        <td><input type="text" id="todoRepeat" name="Repeat" placeholder="ç¹°ã‚Šè¿”ã—ã‚’å…¥åŠ›" /></td>
+    `;
+
+            // æ–°ã—ã„è¡Œã‚’ãƒ†ãƒ¼ãƒ–ãƒ«ãƒœãƒ‡ã‚£ã«è¿½åŠ 
+            tableBody.appendChild(newRow);
+
+            // æ–°ã—ã„è¡Œã®æœ€å¾Œã«ãƒ—ãƒ©ã‚¹ãƒœã‚¿ãƒ³ã‚’è¿½åŠ 
+            var buttonRow = document.createElement('tr');
+            buttonRow.innerHTML = `
+        <td colspan="5" style="text-align: center;">
+            <button type="button" class="plus-button" onclick="addRow()">æ–°ã—ã„ã‚¿ã‚¹ã‚¯ã®è¿½åŠ </button>
+        </td>
+    `;
+            /*tableBody.appendChild(buttonRow);*/
+        }
+
+        document.getElementById('saveTodo').addEventListener('click', function () {
+            var tableBody = document.querySelector('#todoTable tbody');
+            var todoItems = tableBody.querySelectorAll('tr');
+
+            if (todoItems.length === 0) {
+                return false;
+            }
+
+            var form = document.getElementById('todoForm');
+            form.action = 'http://localhost:44369/MyTodo/tuikaTodoItems'; // æ­£ã—ã„ URL ã«è¨­å®š
+            form.method = 'post'; // ãƒ¡ã‚½ãƒƒãƒ‰ã‚’ POST ã«è¨­å®š
+
+
+            // æ—¢å­˜ã®éš ã—ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’å‰Šé™¤
+            var existingHiddenFields = form.querySelectorAll('input[type="hidden"]');
+            existingHiddenFields.forEach(function (field) {
+                field.remove();
             });
 
-            // ŒŸõƒ{ƒ^ƒ“‚ÌƒNƒŠƒbƒNƒCƒxƒ“ƒgİ’è
-            $('#todosearch').click(function (e) {
-                // postˆ—–h~
-                e.preventDefault();
+            todoItems.forEach(function (row, index) {
+                var todoValues = row.children;
 
-                // ŒŸõ‰æ–Ê‚Ö‘JˆÚ
-                window.location.href = 'http://localhost:44369/MyTodo/MyTodoSearch'; // ŒŸõ‰æ–Ê‚ÌURL‚ğw’è
+                if (todoValues.length > 1) {
+                    var postDay = document.createElement('input');
+                    postDay.type = 'hidden';
+                    postDay.name = `todoItems[${index}].Day`;
+                    postDay.value = todoValues[0].querySelector('input[type="date"]').value;
 
-                // “ü—ÍƒeƒLƒXƒg‚ğ‹ó‚É‚·‚é
-                $('#todoTitle').val('');
-            });
+                    var postTime = document.createElement('input');
+                    postTime.type = 'hidden';
+                    postTime.name = `todoItems[${index}].Time`;
+                    postTime.value = todoValues[1].querySelector('input[type="time"]').value;
 
-            // Œ‹‰Êƒ{ƒ^ƒ“‚ÌƒNƒŠƒbƒNƒCƒxƒ“ƒgİ’è
-            $('#resultSubmit').click(function (e) {
-                // postˆ—–h~
-                e.preventDefault();
+                    //var postTime = document.createElement('input');
+                    //postTime.type = 'hidden';
+                    //postTime.name = `todoItems[${index}].time1`;
+                    //postTime.value = todoValues[1].querySelector('input[type="time1"]').value;
 
-                // Œ‹‰Ê‰æ–Ê‚Ö‘JˆÚ
-                window.location.href = '/Todo/Result'; // Œ‹‰Ê‰æ–Ê‚ÌURL‚ğw’è
+                    var postTitle = document.createElement('input');
+                    postTitle.type = 'hidden';
+                    postTitle.name = `todoItems[${index}].Title`;
+                    postTitle.value = todoValues[2].querySelector('input[type="text"]').value;
 
-                // “ü—ÍƒeƒLƒXƒg‚ğ‹ó‚É‚·‚é
-                $('#todoTitle').val('');
-            });
+                    var postDescription = document.createElement('input');
+                    postDescription.type = 'hidden';
+                    postDescription.name = `todoItems[${index}].Description`;
+                    postDescription.value = todoValues[3].querySelector('textarea').value;
 
-            document.addEventListener('DOMContentLoaded', function () {
-                // ƒfƒtƒHƒ‹ƒg‚Åuˆê——vƒŠƒ“ƒN‚ÉƒNƒ‰ƒX‚ğ’Ç‰Á
-                document.getElementById('defaultLink').classList.add('active');
-            });
+                    var postRepeat = document.createElement('input');
+                    postRepeat.type = 'hidden';
+                    postRepeat.name = `todoItems[${index}].Repeat`;
+                    postRepeat.value = todoValues[4].querySelector('input[type="text"]').value;
 
-            document.getElementById('todosave').addEventListener('click', function () {
-                var tableBody = document.querySelector('#todoTable tbody');
-                var todoItems = tableBody.querySelectorAll('tr');
-
-                if (todoItems.length === 0) {
-                    return false;
+                    form.appendChild(postDay);
+                    form.appendChild(postTime);
+                    form.appendChild(postTitle);
+                    form.appendChild(postDescription);
+                    form.appendChild(postRepeat);
                 }
-
-                var form = document.getElementById('todoForm');
-                form.action = 'http://localhost:44369/MyTodo/SaveTodoItems'; // ³‚µ‚¢ URL ‚Éİ’è
-                form.method = 'post'; // ƒƒ\ƒbƒh‚ğ POST ‚Éİ’è
-
-
-                // Šù‘¶‚Ì‰B‚µƒtƒB[ƒ‹ƒh‚ğíœ
-                var existingHiddenFields = form.querySelectorAll('input[type="hidden"]');
-                existingHiddenFields.forEach(function (field) {
-                    field.remove();
-                });
-
-                todoItems.forEach(function (row, index) {
-                    var todoValues = row.children;
-
-                    if (todoValues.length > 1) {
-                        var postDay = document.createElement('input');
-                        postDay.type = 'hidden';
-                        postDay.name = `todoItems[${index}].Day`;
-                        postDay.value = todoValues[0].querySelector('input[type="date"]').value;
-
-                        var postTime = document.createElement('input');
-                        postTime.type = 'hidden';
-                        postTime.name = `todoItems[${index}].Time`;
-                        postTime.value = todoValues[1].querySelector('input[type="time"]').value;
-
-                        //var postTime = document.createElement('input');
-                        //postTime.type = 'hidden';
-                        //postTime.name = `todoItems[${index}].time1`;
-                        //postTime.value = todoValues[1].querySelector('input[type="time1"]').value;
-
-                        var postTitle = document.createElement('input');
-                        postTitle.type = 'hidden';
-                        postTitle.name = `todoItems[${index}].Title`;
-                        postTitle.value = todoValues[2].querySelector('input[type="text"]').value;
-
-                        var postDescription = document.createElement('input');
-                        postDescription.type = 'hidden';
-                        postDescription.name = `todoItems[${index}].Description`;
-                        postDescription.value = todoValues[3].querySelector('textarea').value;
-
-                        var postRepeat = document.createElement('input');
-                        postRepeat.type = 'hidden';
-                        postRepeat.name = `todoItems[${index}].Repeat`;
-                        postRepeat.value = todoValues[4].querySelector('input[type="text"]').value;
-
-                        form.appendChild(postDay);
-                        form.appendChild(postTime);
-                        form.appendChild(postTitle);
-                        form.appendChild(postDescription);
-                        form.appendChild(postRepeat);
-                    }
-                });
-
-                form.submit();
             });
 
-            // ~ƒ{ƒ^ƒ“‰Ÿ‰ºˆ—
-            $('.btn-close').click(function (e) {
-                var closeElem = $(this).closest('div');
-                closeElem.remove();
-            });
+            form.submit();
         });
 
-        function addTasks(task) {
-            // ’Ç‰Áƒ{ƒ^ƒ“‰Ÿ‰º‚Ìˆ—
-            var defaultFirstRow = $('#defaultFirstRow');
 
-            // ƒfƒtƒHƒ‹ƒgs‚ğæ“¾
-            defaultFirstRow.hide();
-            // tbody—v‘f‚ğæ“¾
-            var todoTableBody = $('#todoTable tbody')[0];
-            // tbody—v‘f‚ÉÅ‰ºs‚ğ’Ç‰Á
-            var trElem = todoTableBody.insertRow(-1);
-            // td—v‘f(ƒZƒ‹—v‘f)‚ğ’Ç‰Á
-            var DayCellElem = trElem.insertCell(0);
-            var TimeCellElem = trElem.insertCell(1);
-            var TitleCellElem = trElem.insertCell(2);
-            var DescriptionCellElem = trElem.insertCell(3);
-            var ResultCellElem = trElem.insertCell(4);
-            // “ú•t—ñ
+        document.addEventListener('input', function (event) {
+            if (event.target.name === 'Repeat') {
+                const row = event.target.closest('tr');
+                const dayInput = row.querySelector('input[name="Day"]');
+                const dayOfWeek = parseRepeatToDay(event.target.value);
+                if (dayOfWeek) {
+                    dayInput.value = dayOfWeek.toISOString().split('T')[0]; // YYYY-MM-DD å½¢å¼ã§è¨­å®š
+                }
+            }
+        });
 
-            // ŠúŒÀ—ñ
-
-            // ƒ^ƒCƒgƒ‹—ñ
-            var titleCell = document.createElement('span');
-            titleCell.className = "todotit";
-            titleCell.innerHTML = task;
-            TitleCellElem.appendChild(titleCell);
-            // à–¾—ñ
-            var descriptionCell = document.createElement('span');
-            descriptionCell.className = "tododes";
-            descriptionCell.innerHTML = task;
-            DescriptionCellElem.appendChild(descriptionCell);
-            // Œ‹‰Ê—ñ
-        }
     </script>
 }
 <style>
@@ -250,77 +239,112 @@
     }
 
     .table-bordered th:first-child {
-        width: 10%;
-        min-width: 80px;
+        width: 20%;
+        min-width: 30px;
     }
 
     .table-bordered td:first-child {
-        width: 10%;
-        min-width: 80px;
+        width: 20%;
+        min-width: 20px;
+    }
+
+    .day {
+        width: 200%;
+    }
+
+    .time {
+        width: 200px;
+    }
+
+    .title {
+        width: 400px;
+    }
+
+    .description {
+        width: 400px;
+    }
+
+    .repeat {
+        width: 200px;
     }
 
     .todoContents {
         vertical-align: inherit;
     }
 
-    .left-margin-button {
+    .button-container {
         display: flex;
-        justify-content: flex-start; /* ‚±‚±‚Å¶‚ÉŠñ‚¹‚½‚¢‹——£‚ğw’è */
+        justify-content: center;
+        align-items: center;
+        padding: 10px; /* ãƒœã‚¿ãƒ³å‘¨ã‚Šã«ã‚¹ãƒšãƒ¼ã‚¹ã‚’ç¢ºä¿ */
     }
 
-    .weekdays {
+
+    /*.weekdays {
         display: flex;
-        flex-wrap: wrap; /* •¡”s‚É‚·‚éê‡ */
-        justify-content: center; /* …•½’†‰›‘µ‚¦ */
-        margin-bottom: 20px; /* ‰º‚É­‚µƒXƒy[ƒX‚ğ’Ç‰Á */
-        position: relative;
+        flex-wrap: wrap;*/ /* è¤‡æ•°è¡Œã«ã™ã‚‹å ´åˆ */
+        /*justify-content: center;*/ /* æ°´å¹³ä¸­å¤®æƒãˆ */
+        /*margin-bottom: 20px;*/ /* ä¸‹ã«å°‘ã—ã‚¹ãƒšãƒ¼ã‚¹ã‚’è¿½åŠ  */
+        /*position: relative;
     }
 
         .weekdays a {
-            margin: 0 8px; /* ¶‰E‚É8px‚ÌƒXƒy[ƒX‚ğ’Ç‰Á */
-            font-weight: bold; /* ƒeƒLƒXƒg‚ğ‘¾š‚É */
-        }
+            margin: 0 8px;*/ /* å·¦å³ã«8pxã®ã‚¹ãƒšãƒ¼ã‚¹ã‚’è¿½åŠ  */
+            /*font-weight: bold;*/ /* ãƒ†ã‚­ã‚¹ãƒˆã‚’å¤ªå­—ã« */
+        /*}*/
 
-    .weekday-link {
-        text-decoration: none;
-        color: blue; /* ’Êí‚ÌƒŠƒ“ƒN‚ÌF */
-        padding: 5px 10px;
-        margin: 0 5px;
-        border-radius: 3px;
+    form div {
+        margin-bottom: 15px;
     }
 
-        .weekday-link.active {
-            color: purple; /* ‘I‘ğ‚³‚ê‚½ƒŠƒ“ƒN‚ÌF */
-            font-weight: bold;
-        }
-
-    .checkbox-label {
+    form label {
         display: block;
-        text-align: center; /* ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚ğ’†‰›‚É”z’u */
-        margin-top: 0px; /* ã‚ÉƒXƒy[ƒX‚ğ’Ç‰Á */
+        margin-bottom: 5px;
+        font-weight: bold;
     }
 
-        .checkbox-label input {
-            margin-left: 5px; /* ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚Æƒ‰ƒxƒ‹‚ÌŠÔ‚ÉƒXƒy[ƒX‚ğ’Ç‰Á */
+    form input[type="text"],
+    form input[type="date"],
+    form input[type="time"],
+    form textarea {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+    }
+
+    form button[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+        form button[type="submit"]:hover {
+            background-color: #0056b3;
         }
 
-        .maru, .batu{
-            border: none;
-            background-color: transparent;
-            font-size: 1.5em;
-            cursor: pointer;
+    .day {
+        width: 100px;
+    }
+
+    /* HTMLå†…ã®styleå±æ€§ã®ä»£ã‚ã‚Šã«CSSã‚’ä½¿ç”¨ */
+    .notification-container {
+        display: flex;
+        align-items: center;
+    }
+
+        .notification-container span {
+            margin-left: 10px; /*å¿…è¦ã«å¿œã˜ã¦èª¿æ•´ */
+            font-size: 14px; /*å¿…è¦ã«å¿œã˜ã¦èª¿æ•´ */
         }
 
-        .maru{
-            color: green;
-        }
-
-        .batu{
-            color: red;
-        }
-
-    /*        .alert-fade {
-        transition: opacity 3s;
-        }
-        */
+    .plus-button {
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 4px;
+    }
 </style>
